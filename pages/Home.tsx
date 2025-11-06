@@ -106,8 +106,8 @@ const ContactFormSection = () => {
                                         {submitting ? 'Submitting...' : t.home.contactSection.formSubmit}
                                     </button>
                                 </div>
-                                {submitted && <p className="text-green-600">Thank you for your message. We will get back to you shortly.</p>}
-                                {error && <p className="text-red-600">Something went wrong. Please try again.</p>}
+                                {submitted && <p className="text-green-600">{t.contact.formSuccess}</p>}
+                                {error && <p className="text-red-600">{t.contact.formError}</p>}
                             </form>
                         </div>
                     </AnimatedSection>

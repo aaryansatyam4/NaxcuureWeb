@@ -180,6 +180,8 @@ export const content: Content = {
       formEmail: 'Email Address',
       formMessage: 'Your Message',
       formSubmit: 'Send Message',
+      formSuccess: 'Thank you for your message. We will get back to you shortly.',
+      formError: 'Something went wrong. Please try again.',
     }
   },
   ru: {
@@ -320,7 +322,9 @@ export const content: Content = {
             formName: "Полное Имя",
             formEmail: "Адрес Электронной Почты",
             formMessage: "Ваше Сообщение",
-            formSubmit: "Отправить Сообщение"
+            formSubmit: "Отправить Сообщение",
+            formSuccess: "Спасибо за ваше сообщение. Мы свяжемся с вами в ближайшее время.",
+            formError: "Что-то пошло не так. Пожалуйста, попробуйте еще раз.",
         }
     },
 fr: {
@@ -461,7 +465,9 @@ fr: {
             formName: "Nom Complet",
             formEmail: "Adresse E-mail",
             formMessage: "Votre Message",
-            formSubmit: "Envoyer Message"
+            formSubmit: "Envoyer Message",
+            formSuccess: "Merci pour votre message. Nous vous répondrons sous peu.",
+            formError: "Une erreur s'est produite. Veuillez réessayer.",
         },
     
     },
@@ -603,7 +609,9 @@ fr: {
             formName: "Nombre Completo",
             formEmail: "Dirección de Correo Electrónico",
             formMessage: "Su Mensaje",
-            formSubmit: "Enviar Mensaje"
+            formSubmit: "Enviar Mensaje",
+            formSuccess: "Gracias por su mensaje. Nos pondremos en contacto con usted en breve.",
+            formError: "Algo salió mal. Por favor, inténtelo de nuevo.",
         },
     },
 };

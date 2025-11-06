@@ -144,6 +144,8 @@ export interface Content {
       formEmail: string;
       formMessage: string;
       formSubmit: string;
+      formSuccess: string;
+      formError: string;
     };
   footer: {
     footer1: string;
