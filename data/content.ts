@@ -7,17 +7,50 @@ import { productListRu } from './products/ru';
 
 
 const jobsEn = [
-    { id: 'job-01', title: 'Senior Research Scientist', location: 'Pharma City, Global HQ', department: 'Research & Development' },
-    { id: 'job-02', title: 'Quality Assurance Manager', location: 'Pharma City, Global HQ', department: 'Quality & Compliance' },
-    { id: 'job-03', title: 'Regulatory Affairs Specialist', location: 'Remote', department: 'Regulatory Affairs' },
-    { id: 'job-04', title: 'Clinical Trial Associate', location: 'Pharma City, Global HQ', department: 'Clinical Operations' },
-    { id: 'job-05', title: 'Marketing Product Manager', location: 'Pharma City, Global HQ', department: 'Commercial' },
+    { 
+        id: 'job-01', 
+        title: 'Assistant Manager – Regulatory Affairs (DRA)', 
+        location: 'Noida', 
+        department: 'Regulatory Affairs',
+        link: 'https://forms.gle/PnGXXKpRXevrirSj9'
+    },
+];
+
+const jobsRu = [
+    {
+        id: 'job-01',
+        title: 'Помощник менеджера по регуляторным вопросам (DRA)',
+        location: 'Нойда',
+        department: 'Регуляторные вопросы',
+        link: 'https://forms.gle/PnGXXKpRXevrirSj9'
+    },
+];
+
+const jobsFr = [
+    {
+        id: 'job-01',
+        title: 'Directeur Adjoint – Affaires Réglementaires (DRA)',
+        location: 'Noida',
+        department: 'Affaires Réglementaires',
+        link: 'https://forms.gle/PnGXXKpRXevrirSj9'
+    },
+];
+
+const jobsEs = [
+    {
+        id: 'job-01',
+        title: 'Subgerente – Asuntos Regulatorios (DRA)',
+        location: 'Noida',
+        department: 'Asuntos Regulatorios',
+        link: 'https://forms.gle/PnGXXKpRXevrirSj9'
+    },
 ];
 
 
 export const content: Content = {
   en: {
     nav: { home: 'Home', about: 'About Us', products: 'Products', quality: 'Quality', career: 'Career' },
+    footer:{footer1:'Formerly known as Naxcure Healthcare Pvt Ltd.',footer2:'Committed to advancing health and well-being globally.'},
     home: {
       heroTitle: 'Leading Pharmaceutical Excellence',
       heroSubtitle: 'Committed to improving global health through innovative medicines and quality healthcare solutions.',
@@ -46,6 +79,8 @@ export const content: Content = {
     },
     about: {
       title: 'About Naxcuure',
+      journeyTitle: 'Our Journey',
+      cultureTitle: 'Our Culture',
       p1: 'Naxcuure is a progressive healthcare company committed to transforming lives through innovation, science, and care. We focus on developing high-quality Pharmaceutical, Nutraceutical, and Herbal formulations that promote better health and enhance everyday living.',
       p2: 'Driven by a passion for research and excellence, our teams work tirelessly to ensure every product meets the highest standards of quality, safety, and efficacy. From concept to creation, innovation remains at the heart of everything we do.',
       p3: 'At Naxcuure, we believe good health is the foundation of a fulfilling life. With this belief, we continue to expand our global presence, building trust and delivering solutions that empower people to live healthier, happier, and more active lives.',
@@ -91,6 +126,11 @@ export const content: Content = {
     },
    quality: {
   title: 'Commitment to Unmatched Quality',
+  stringentStandardsTitle: 'Stringent Standards',
+  patientSafetyTitle: 'Patient Safety',
+  certificationsTitle: 'Certifications and compliances',
+  patientSafetyText: 'Our ultimate measure of quality, ensuring every product is safe and effective.',
+  certificationsText: 'We uphold global quality standards, recognized across WHO-GMP, EU-GMP, PICS, Uzbekistan, Yemen, NAFDAC, Kenya, Sudan, and Cambodia, reflecting our commitment to excellence and trust worldwide.',
   p1: 'At Naxcuure, quality is not just a process — it is our philosophy. Every stage of our work, from research to manufacturing, is guided by uncompromising standards to ensure that every product we deliver is safe, effective, and dependable.',
   p2: 'Our world-class manufacturing facilities operate in strict compliance with cGMP and other international standards. Regular audits and continuous advancements in technology reinforce our promise of excellence and reliability.',
   p3: 'We maintain end-to-end control of our quality ecosystem — from the careful selection of raw materials to precise manufacturing, testing, packaging, and distribution. For Naxcuure, patient well-being defines the true measure of quality.',
@@ -140,9 +180,6 @@ export const content: Content = {
       formEmail: 'Email Address',
       formMessage: 'Your Message',
       formSubmit: 'Send Message',
-    },
-    footer: {
-      rights: '© 2025 Naxcuure. All Rights Reserved.',
     }
   },
   ru: {
@@ -153,6 +190,11 @@ export const content: Content = {
             quality: "Качество",
             career: "Карьера"
         },
+        footer: {
+  footer1: 'Ранее известная как Naxcure Healthcare Pvt Ltd.',
+  footer2: 'Посвящена улучшению здоровья и благополучия во всем мире.'
+},
+
         home: {
             heroTitle: "Лидерство в фармацевтическом превосходстве",
             heroSubtitle: "Стремимся улучшать глобальное здоровье с помощью инновационных лекарств и качественных решений в области здравоохранения.",
@@ -181,6 +223,8 @@ export const content: Content = {
         },
         about: {
             title: "О Naxcuure",
+            journeyTitle: "Наш путь",
+            cultureTitle: "Наша культура",
             p1: "Naxcuure — это прогрессивная компания в сфере здравоохранения, приверженная преобразованию жизни с помощью инноваций, науки и заботы. Мы сосредоточены на разработке высококачественных фармацевтических, нутрицевтических и растительных формул, которые способствуют улучшению здоровья и повышают качество повседневной жизни.",
             p2: "Движимые страстью к исследованиям и совершенству, наши команды неустанно работают, чтобы гарантировать, что каждый продукт соответствует самым высоким стандартам качества, безопасности и эффективности. От концепции до создания, инновации остаются в основе всего, что мы делаем.",
             p3: "В Naxcuure мы верим, что хорошее здоровье — это основа полноценной жизни. С этой верой мы продолжаем расширять наше глобальное присутствие, укрепляя доверие и предлагая решения, которые дают людям возможность жить более здоровой, счастливой и активной жизнью.",
@@ -225,6 +269,11 @@ export const content: Content = {
         },
         quality: {
             title: "Приверженность Непревзойденному Качеству",
+            stringentStandardsTitle: "Строгие стандарты",
+            patientSafetyTitle: "Безопасность пациентов",
+            certificationsTitle: "Сертификаты и соответствие",
+            patientSafetyText: "Наша высшая мера качества, гарантирующая, что каждый продукт безопасен и эффективен.",
+            certificationsText: "Мы поддерживаем мировые стандарты качества, признанные в WHO-GMP, EU-GMP, PICS, Узбекистане, Йемене, NAFDAC, Кении, Судане и Камбодже, что отражает наше стремление к совершенству и доверию во всем мире.",
             p1: "В Naxcuure качество — это не просто процесс, это наша философия. Каждый этап нашей работы, от исследований до производства, руководствуется бескомпромиссными стандартами, чтобы гарантировать, что каждый продукт, который мы поставляем, безопасен, эффективен и надежен.",
             p2: "Наши производственные мощности мирового класса работают в строгом соответствии с cGMP и другими международными стандартами. Регулярные аудиты и постоянное совершенствование технологий укрепляют наше обещание превосходства и надежности.",
             p3: "Мы поддерживаем сквозной контроль нашей экосистемы качества — от тщательного отбора сырья до точного производства, тестирования, упаковки и распространения. Для Naxcuure благополучие пациентов определяет истинную меру качества.",
@@ -249,7 +298,7 @@ export const content: Content = {
             ],
             openingsTitle: "Присоединяйтесь к Нашей Команде",
             openingsButton: "Изучить Вакансии",
-            jobs: "jobsEn",
+            jobs: jobsRu,
             form: {
                 title: "Подать Заявку на",
                 name: "Полное Имя",
@@ -272,9 +321,6 @@ export const content: Content = {
             formEmail: "Адрес Электронной Почты",
             formMessage: "Ваше Сообщение",
             formSubmit: "Отправить Сообщение"
-        },
-        footer: {
-            rights: "© 2025 Naxcuure. Все Права Защищены."
         }
     },
 fr: {
@@ -285,6 +331,11 @@ fr: {
             quality: "Qualité",
             career: "Carrières"
         },
+        footer: {
+  footer1: 'Anciennement connue sous le nom de Naxcure Healthcare Pvt Ltd.',
+  footer2: 'Engagée à améliorer la santé et le bien-être dans le monde entier.'
+},
+
         home: {
             heroTitle: "Leader de l'Excellence Pharmaceutique",
             heroSubtitle: "Engagés à améliorer la santé mondiale grâce à des médicaments innovants et des solutions de soins de santé de qualité.",
@@ -313,6 +364,8 @@ fr: {
         },
         about: {
             title: "À Propos de Naxcuure",
+            journeyTitle: "Notre parcours",
+            cultureTitle: "Notre culture",
             p1: "Naxcuure est une entreprise de soins de santé progressiste engagée à transformer des vies par l'innovation, la science et le soin. Nous nous concentrons sur le développement de formulations Pharmaceutiques, Nutraceutiques et Herbales de haute qualité qui favorisent une meilleure santé et améliorent la vie quotidienne.",
             p2: "Animées par une passion pour la recherche et l'excellence, nos équipes travaillent sans relâche pour garantir que chaque produit répond aux normes les plus élevées de qualité, de sécurité et d'efficacité. Du concept à la création, l'innovation reste au cœur de tout ce que nous faisons.",
             p3: "Chez Naxcuure, nous croyons qu'une bonne santé est le fondement d'une vie épanouie. Forts de cette conviction, nous continuons d'étendre notre présence mondiale, en instaurant la confiance et en fournissant des solutions qui permettent aux gens de vivre une vie plus saine, plus heureuse et plus active.",
@@ -357,6 +410,11 @@ fr: {
         },
         quality: {
             title: "Engagement envers une Qualité Inégalée",
+            stringentStandardsTitle: "Normes strictes",
+            patientSafetyTitle: "Sécurité des patients",
+            certificationsTitle: "Certifications et conformités",
+            patientSafetyText: "Notre mesure ultime de la qualité, garantissant que chaque produit est sûr et efficace.",
+            certificationsText: "Nous respectons les normes de qualité mondiales, reconnues par WHO-GMP, EU-GMP, PICS, l'Ouzbékistan, le Yémen, NAFDAC, le Kenya, le Soudan et le Cambodge, reflétant notre engagement envers l'excellence et la confiance dans le monde entier.",
             p1: "Chez Naxcuure, la qualité n'est pas seulement un processus, c'est notre philosophie. Chaque étape de notre travail, de la recherche à la fabrication, est guidée par des normes sans compromis pour garantir que chaque produit que nous livrons est sûr, efficace et fiable.",
             p2: "Nos installations de fabrication de classe mondiale fonctionnent en stricte conformité avec les BPFc (cGMP) et d'autres normes internationales. Des audits réguliers et des avancées technologiques continues renforcent notre promesse d'excellence et de fiabilité.",
             p3: "Nous maintenons un contrôle de bout en bout de notre écosystème de qualité — de la sélection minutieuse des matières premières à la fabrication précise, aux tests, à l'emballage et à la distribution. Pour Naxcuure, le bien-être du patient définit la véritable mesure de la qualité.",
@@ -381,7 +439,7 @@ fr: {
             ],
             openingsTitle: "Rejoignez Notre Équipe",
             openingsButton: "Explorer les Opportunités",
-            jobs: "jobsEn",
+            jobs: jobsFr,
             form: {
                 title: "Postuler pour",
                 name: "Nom Complet",
@@ -405,9 +463,7 @@ fr: {
             formMessage: "Votre Message",
             formSubmit: "Envoyer Message"
         },
-        footer: {
-            rights: "© 2025 Naxcuure. Tous Droits Réservés."
-        }
+    
     },
   es: {
         nav: {
@@ -417,6 +473,11 @@ fr: {
             quality: "Calidad",
             career: "Carrera"
         },
+        footer: {
+  footer1: 'Anteriormente conocida como Naxcure Healthcare Pvt Ltd.',
+  footer2: 'Comprometidos con mejorar la salud y el bienestar a nivel mundial.'
+},
+
         home: {
             heroTitle: "Liderando la Excelencia Farmacéutica",
             heroSubtitle: "Comprometidos con la mejora de la salud global a través de medicinas innovadoras y soluciones sanitarias de calidad.",
@@ -445,6 +506,8 @@ fr: {
         },
         about: {
             title: "Acerca de Naxcuure",
+            journeyTitle: "Nuestro viaje",
+            cultureTitle: "Nuestra cultura",
             p1: "Naxcuure es una compañía de atención médica progresista comprometida con la transformación de vidas a través de la innovación, la ciencia y el cuidado. Nos enfocamos en desarrollar formulaciones Farmacéuticas, Nutracéuticas y Herbales de alta calidad que promuevan una mejor salud y mejoren la vida diaria.",
             p2: "Impulsados por una pasión por la investigación y la excelencia, nuestros equipos trabajan incansablemente para garantizar que cada producto cumpla con los más altos estándares de calidad, seguridad y eficacia. Desde el concepto hasta la creación, la innovación se mantiene en el corazón de todo lo que hacemos.",
             p3: "En Naxcuure, creemos que la buena salud es la base de una vida plena. Con esta creencia, continuamos expandiendo nuestra presencia global, generando confianza y ofreciendo soluciones que empoderan a las personas para vivir vidas más sanas, felices y activas.",
@@ -489,6 +552,11 @@ fr: {
         },
         quality: {
             title: "Compromiso con la Calidad Inigualable",
+            stringentStandardsTitle: "Estándares estrictos",
+            patientSafetyTitle: "Seguridad del paciente",
+            certificationsTitle: "Certificaciones y cumplimientos",
+            patientSafetyText: "Nuestra máxima medida de calidad, asegurando que cada producto sea seguro y eficaz.",
+            certificationsText: "Mantenemos los estándares de calidad globales, reconocidos en WHO-GMP, EU-GMP, PICS, Uzbekistán, Yemen, NAFDAC, Kenia, Sudán y Camboya, lo que refleja nuestro compromiso con la excelencia y la confianza en todo el mundo.",
             p1: "En Naxcuure, la calidad no es solo un proceso, es nuestra filosofía. Cada etapa de nuestro trabajo, desde la investigación hasta la fabricación, se guía por estándares intransigentes para asegurar que cada producto que entregamos sea seguro, efectivo y confiable.",
             p2: "Nuestras instalaciones de fabricación de clase mundial operan en estricto cumplimiento con cGMP y otros estándares internacionales. Las auditorías regulares y los avances continuos en tecnología refuerzan nuestra promesa de excelencia y fiabilidad.",
             p3: "Mantenemos un control de extremo a extremo de nuestro ecosistema de calidad, desde la cuidadosa selección de materias primas hasta la fabricación precisa, las pruebas, el empaque y la distribución. Para Naxcuure, el bienestar del paciente define la verdadera medida de la calidad.",
@@ -512,8 +580,8 @@ fr: {
                 "Oportunidades para Contribuir al Impacto Global en la Atención Médica"
             ],
             openingsTitle: "Únase a Nuestro Equipo",
-            openingsButton: "Explorar Oportunidades",
-            jobs: "jobsEn",
+            openingsButton: "Explorar Ooportunidades",
+            jobs: jobsEs,
             form: {
                 title: "Aplicar para",
                 name: "Nombre Completo",
@@ -537,8 +605,5 @@ fr: {
             formMessage: "Su Mensaje",
             formSubmit: "Enviar Mensaje"
         },
-        footer: {
-            rights: "© 2025 Naxcuure. Todos los Derechos Reservados."
-        }
     },
 };

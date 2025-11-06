@@ -23,7 +23,7 @@ const Quality = () => {
                         <img src="https://images.pexels.com/photos/2280551/pexels-photo-2280551.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Quality Control Laboratory" className="w-full h-full object-cover" />
                     </div>
                      <div className="text-lg text-gray-700 font-sans space-y-6 leading-relaxed md:pl-10">
-                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">Stringent Standards</h2>
+                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">{t.quality.stringentStandardsTitle}</h2>
                         <p>{t.quality.p1}</p>
                         <p>{t.quality.p2}</p>
                     </div>
@@ -48,13 +48,13 @@ const Quality = () => {
                 <div className="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
                     <FlipCard
                         icon={<ShieldCheckIcon className="w-8 h-8"/>}
-                        title="Patient Safety"
-                        text="Our ultimate measure of quality, ensuring every product is safe and effective."
+                        title={t.quality.patientSafetyTitle}
+                        text={t.quality.patientSafetyText}
                     />
                     <FlipCard
                         icon={<UsersIcon className="w-8 h-8"/>}
-                        title="Regulatory Compliance"
-                        text="Adherence to the highest international standards, including FDA, EMA, and WHO cGMP."
+                        title={t.quality.certificationsTitle}
+                        text={t.quality.certificationsText}
                     />
                 </div>
             </AnimatedSection>

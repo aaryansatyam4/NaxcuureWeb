@@ -12,92 +12,121 @@ const Chatbot: React.FC = () => {
   const { t } = useLanguage();
   const chatContentRef = useRef<HTMLDivElement>(null);
 
+  // instantiate Google GenAI client (ensure API key is set in env)
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
 
+  // initial greeting when chat opens (keeps it simple — product detail is NOT here)
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       setMessages([
-        { role: 'model', text: "Hello! I'm NaxBot, your virtual assistant for Naxcuure. How can I help you today?" }
+        {
+          role: 'model',
+          text: "Hello! I'm NaxBot, your virtual assistant for Naxcuure. How can I help you today?"
+        }
       ]);
     }
   }, [isOpen]);
 
+  // auto-scroll to bottom when messages or loading state change
   useEffect(() => {
     chatContentRef.current?.scrollTo(0, chatContentRef.current.scrollHeight);
   }, [messages, isLoading]);
 
+  /**
+   * generateContext
+   * Builds the system instruction + site content that will be provided to the model.
+   *
+   * NOTE:
+   * - We explicitly instruct the model to mention "Naxcuure has over 200 products" and
+   *   to refer users to the Contact page WHEN the user asks about product counts, catalogs,
+   *   pricing, availability, ordering, or similar product-specific queries.
+   * - We DO NOT put that marketing line into the initial greeting; it will be used only when relevant.
+   */
   const generateContext = (content: Content['en']) => {
     const home = `
 # Naxcuure Home Page Information
-- **Main Slogan**: ${content.home.heroTitle}: ${content.home.heroSubtitle}
-- **Announcement**: The latest announcement is titled "${content.home.announcement.title}" and says: "${content.home.announcement.text}".
-- **Commitment**: ${content.home.section1Title}: ${content.home.section1Text} ${content.home.section1P2}
-- **Presence**: ${content.home.section2Title}: ${content.home.section2Text}
-- **Future**: ${content.home.section3Title}: ${content.home.section3Text}
+- Main Slogan: ${content.home.heroTitle}: ${content.home.heroSubtitle}
+- Announcement: ${content.home.announcement.title} — ${content.home.announcement.text}
+- Commitment: ${content.home.section1Title}: ${content.home.section1Text} ${content.home.section1P2}
+- Presence: ${content.home.section2Title}: ${content.home.section2Text}
+- Future: ${content.home.section3Title}: ${content.home.section3Text}
     `;
 
     const about = `
 # About Naxcuure
-- **Description**: ${content.about.p1} ${content.about.p2} ${content.about.p3}
-- **Mission**: ${content.about.missionTitle}: ${content.about.missionText}
-- **Vision**: ${content.about.visionTitle}: ${content.about.visionText}
-- **Values**: ${content.about.values.map(v => `${v.title}: ${v.text}`).join(', ')}
+- Description: ${content.about.p1} ${content.about.p2} ${content.about.p3}
+- Mission: ${content.about.missionTitle}: ${content.about.missionText}
+- Vision: ${content.about.visionTitle}: ${content.about.visionText}
+- Values: ${content.about.values.map(v => `${v.title}: ${v.text}`).join('; ')}
     `;
 
     const products = `
 # Products
-- **Intro**: ${content.products.intro}
-- **Product List**: 
-${content.products.productList.map(p => `  - **Name**: ${p.productName}\n    **Use**: ${p.indicationsForUse}\n    **Composition**: ${p.composition}`).join('\n')}
+- Intro: ${content.products.intro}
+- Product List:
+${content.products.productList.map(p => `  - Name: ${p.productName}\n    Use: ${p.indicationsForUse}\n    Composition: ${p.composition}`).join('\n')}
     `;
 
     const quality = `
 # Quality Commitment
 - ${content.quality.p1} ${content.quality.p2} ${content.quality.p3}
-- **Promise**: ${content.quality.commitmentText}
-- **Systems**: ${content.quality.section2Text}
+- Promise: ${content.quality.commitmentText}
+- Systems: ${content.quality.section2Text}
     `;
 
     const career = `
 # Careers at Naxcuure
-- **Why join?**: ${content.career.introText}
-- **Benefits**: ${content.career.benefits.join(', ')}
-- **Openings**: 
-${content.career.jobs.map(j => `  - **Title**: ${j.title}\n    **Department**: ${j.department}\n    **Location**: ${j.location}`).join('\n')}
+- Why join: ${content.career.introText}
+- Benefits: ${content.career.benefits.join(', ')}
+- Openings:
+${content.career.jobs.map(j => `  - Title: ${j.title}\n    Department: ${j.department}\n    Location: ${j.location}`).join('\n')}
     `;
-    
-    return `You are a helpful AI assistant for Naxcuure, a pharmaceutical company. Your name is NaxBot. Answer user questions based ONLY on the information provided below. Be friendly, professional, and concise. If a question is asked that cannot be answered with the provided information (e.g., asking for medical advice, stock prices, or information about competitor companies), politely state that you can only provide information found on the Naxcuure website. Do not make up any information.
 
-Here is the information about the company:
+    // System instruction with clear guidance for product-related queries
+    return `You are NaxBot — a helpful and concise AI assistant for Naxcuure (a pharmaceutical company).
+Follow these rules EXACTLY:
+
+1. ANSWER ONLY using the information provided below (do NOT fabricate facts).
+2. Be friendly, professional, and concise.
+3. If the user asks for medical advice, legal advice, competitor info, pricing, or anything outside of the provided information, respond that you can only provide information found on Naxcuure's website and recommend contacting the company or a qualified professional.
+4. **Special product guidance** (use this only when relevant):
+   - If the user asks about the number of products, product catalog, product range, availability, ordering, or asks "how many products do you have" / "do you have X product" / "can I get the catalog", then include this information in your reply:
+     "Naxcuure manufactures and supplies over 200 high-quality pharmaceutical products across multiple therapeutic categories. For detailed product specifications, pricing, availability, or to request the full catalog, please contact us via the Contact page on our website."
+   - Do NOT include the above sentence unless the user's question is specifically about product counts, catalog, availability, ordering, or closely related topics.
+
+Now, here is the site information you should use to answer queries:
 ---
 ${[home, about, products, quality, career].join('\n\n')}
----
-`;
+---`;
   };
 
+  // handle sending a user message
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userInput.trim() || isLoading) return;
 
-    const userMessage: ChatMessage = { role: 'user', text: userInput };
+    const userMessage: ChatMessage = { role: 'user', text: userInput.trim() };
     setMessages(prev => [...prev, userMessage]);
     setUserInput('');
     setIsLoading(true);
 
     try {
       const systemInstruction = generateContext(t);
+      // prepare history — convert to the simple shape expected by your usage
       const history = [...messages, userMessage].map(msg => ({
         role: msg.role,
         parts: [{ text: msg.text }]
       }));
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.5-flash-lite',
         contents: history,
         config: { systemInstruction },
       });
 
-      const modelMessage: ChatMessage = { role: 'model', text: response.text };
+      // handle model response — keep safe fallback if shape differs
+      const modelText = (response && (response.text ?? (response.outputText ?? ''))) as string;
+      const modelMessage: ChatMessage = { role: 'model', text: modelText || 'Sorry, I could not generate a response.' };
       setMessages(prev => [...prev, modelMessage]);
     } catch (error) {
       console.error('Gemini API error:', error);
@@ -110,7 +139,8 @@ ${[home, about, products, quality, career].join('\n\n')}
 
   return (
     <>
-      <div className={`fixed bottom-0 right-0 m-6 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}>
+      {/* collapsed chat button */}
+      <div className={`fixed bottom-0 right-0 m-6 z-50 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}>
         <button
           onClick={() => setIsOpen(true)}
           className="bg-primary hover:bg-accent text-white rounded-full p-4 shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
@@ -120,11 +150,12 @@ ${[home, about, products, quality, career].join('\n\n')}
         </button>
       </div>
 
-      <div className={`fixed bottom-0 right-0 w-full h-full sm:bottom-6 sm:right-6 sm:w-[400px] sm:h-[580px] sm:max-h-[calc(100dvh-3rem)] bg-white sm:rounded-xl shadow-2xl flex flex-col transition-all duration-300 ease-in-out origin-bottom-right ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
+      {/* open chat panel */}
+      <div className={`fixed bottom-0 right-0 w-full h-full sm:bottom-6 sm:right-6 sm:w-[400px] sm:h-[580px] sm:max-h-[calc(100dvh-3rem)] z-50 bg-white sm:rounded-xl shadow-2xl flex flex-col transition-all duration-300 ease-in-out origin-bottom-right ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 bg-primary text-white sm:rounded-t-xl">
           <div className="flex items-center space-x-3">
-             <ChatBubbleIcon className="w-6 h-6"/>
+            <ChatBubbleIcon className="w-6 h-6" />
             <h3 className="text-lg font-serif font-semibold">NaxBot Assistant</h3>
           </div>
           <button onClick={() => setIsOpen(false)} className="p-1 rounded-full hover:bg-white/20 transition-colors" aria-label="Close Chat">
@@ -137,18 +168,20 @@ ${[home, about, products, quality, career].join('\n\n')}
           {messages.map((message, index) => (
             <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[80%] p-3 rounded-2xl font-sans text-sm ${message.role === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
+                {/* render message text */}
                 {message.text}
               </div>
             </div>
           ))}
-           {isLoading && (
+
+          {isLoading && (
             <div className="flex justify-start">
-               <div className="max-w-[80%] p-3 rounded-2xl font-sans text-sm bg-gray-200 text-gray-800 rounded-bl-none flex items-center space-x-2">
-                 <SpinnerIcon className="w-4 h-4 text-primary" />
-                 <span>Thinking...</span>
-               </div>
+              <div className="max-w-[80%] p-3 rounded-2xl font-sans text-sm bg-gray-200 text-gray-800 rounded-bl-none flex items-center space-x-2">
+                <SpinnerIcon className="w-4 h-4 text-primary" />
+                <span>Thinking...</span>
+              </div>
             </div>
-           )}
+          )}
         </div>
 
         {/* Input */}

@@ -25,16 +25,16 @@ const About = () => {
       <div className="py-24 md:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32">
             <AnimatedSection>
-                <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                      <div className="md:pr-10">
-                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">Our Journey</h2>
+                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">{t.about.journeyTitle}</h2>
                         <div className="text-lg text-gray-700 font-sans space-y-6 leading-relaxed">
                             <p>{t.about.p1}</p>
                             <p>{t.about.p2}</p>
                         </div>
                     </div>
                     <div className="w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
-                        <img src="https://images.pexels.com/photos/7174411/pexels-photo-7174411.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Our Journey" className="w-full h-full object-cover" />
+                        <img src="/img4.jpg" />
                     </div>
                 </div>
             </AnimatedSection>
@@ -42,10 +42,10 @@ const About = () => {
             <AnimatedSection>
                  <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                     <div className="order-2 md:order-1 w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
-                        <img src="https://images.pexels.com/photos/3825586/pexels-photo-3825586.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Our Culture" className="w-full h-full object-cover" />
+                        <img src="/img5.jpg" />
                     </div>
                      <div className="order-1 md:order-2 md:pl-10">
-                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">Our Culture</h2>
+                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">{t.about.cultureTitle}</h2>
                         <div className="text-lg text-gray-700 font-sans space-y-6 leading-relaxed">
                             <p>{t.about.p3}</p>
                         </div>

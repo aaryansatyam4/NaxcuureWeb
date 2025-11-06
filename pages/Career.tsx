@@ -25,7 +25,7 @@ const Career = () => {
             <AnimatedSection>
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
                     <div className="w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
-                         <img src="https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Team collaborating" className="w-full h-full object-cover"/>
+                         <img src="/career.jpg" alt="Team collaborating" className="w-full h-full object-cover"/>
                     </div>
                     <div className="md:pl-10">
                          <h3 className="text-3xl font-serif text-primary mb-6">{t.career.benefitsTitle}</h3>

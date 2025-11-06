@@ -68,6 +68,8 @@ export interface Content {
     };
     about: {
       title: string;
+      journeyTitle: string;
+      cultureTitle: string;
       p1: string;
       p2: string;
       p3: string;
@@ -95,6 +97,11 @@ export interface Content {
     };
     quality: {
       title: string;
+      stringentStandardsTitle: string;
+      patientSafetyTitle: string;
+      certificationsTitle: string;
+      patientSafetyText: string;
+      certificationsText: string;
       p1: string;
       p2: string;
       p3: string;
@@ -137,8 +144,10 @@ export interface Content {
       formMessage: string;
       formSubmit: string;
     };
-    footer: {
-        rights: string;
-    }
+  footer: {
+    footer1: string;
+    footer2: string;
+}
+
   };
 }

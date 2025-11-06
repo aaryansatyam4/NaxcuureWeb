@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Page, PageName } from './types';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -11,51 +11,57 @@ import Career from './pages/Career';
 import ProductDetail from './pages/ProductDetail';
 import Chatbot from './components/Chatbot';
 
-const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<Page>({ name: 'Home' });
-
-  const handleSetPage = (page: PageName) => {
-    setCurrentPage({ name: page });
+const ScrollToTop: React.FC = () => {
+  React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
+  return null;
+};
+
+const ProductsPage: React.FC = () => {
+  const navigate = useNavigate();
   
   const handleViewProduct = (productId: string) => {
-    setCurrentPage({ name: 'Products', productId });
+    navigate(`/Product/${productId}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  const renderPage = () => {
-    if (currentPage.name === 'Products' && currentPage.productId) {
-      return <ProductDetail productId={currentPage.productId} onBack={() => handleSetPage('Products')} />;
-    }
-    
-    switch (currentPage.name) {
-      case 'Home':
-        return <Home />;
-      case 'About':
-        return <About />;
-      case 'Products':
-        return <Products onViewProduct={handleViewProduct} />;
-      case 'Quality':
-        return <Quality />;
-      case 'Career':
-        return <Career />;
-      default:
-        return <Home />;
-    }
   };
 
+  return <Products onViewProduct={handleViewProduct} />;
+};
+
+const ProductDetailPage: React.FC = () => {
+  const { productId } = useParams<{ productId: string }>();
+  const navigate = useNavigate();
 
   return (
+    <ProductDetail 
+      productId={productId || ''} 
+      onBack={() => navigate('/Product')} 
+    />
+  );
+};
+
+const App: React.FC = () => {
+  return (
     <LanguageProvider>
-      <div className="font-sans bg-white">
-        <Header currentPage={currentPage.name} setPage={handleSetPage} />
-        <main>
-          {renderPage()}
-        </main>
-        <Footer setPage={handleSetPage} />
-        <Chatbot />
-      </div>
+      <Router>
+        <div className="font-sans bg-white min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<><ScrollToTop /><Home /></>} />
+              <Route path="/about" element={<><ScrollToTop /><About /></>} />
+              <Route path="/Product" element={<><ScrollToTop /><ProductsPage /></>} />
+              <Route path="/Product/:productId" element={<><ScrollToTop /><ProductDetailPage /></>} />
+              <Route path="/quality" element={<><ScrollToTop /><Quality /></>} />
+              <Route path="/career" element={<><ScrollToTop /><Career /></>} />
+              <Route path="*" element={<><ScrollToTop /><Home /></>} />
+            </Routes>
+          </main>
+          <Footer />
+          <Chatbot />
+        </div>
+      </Router>
     </LanguageProvider>
   );
 };
