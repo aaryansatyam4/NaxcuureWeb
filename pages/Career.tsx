@@ -51,9 +51,11 @@ const Career = () => {
                                     <h3 className="text-2xl font-serif text-primary">{job.title}</h3>
                                     <p className="font-sans text-gray-600 mt-1">{job.department} &middot; {job.location}</p>
                                 </div>
-                                <button className="font-sans text-base font-semibold text-white bg-primary hover:bg-accent px-6 py-3 rounded-md transition-colors duration-300 flex-shrink-0">
-                                    {t.career.openingsButton}
-                                </button>
+                                <a href={job.link} target="_blank" rel="noopener noreferrer">
+                                    <button className="font-sans text-base font-semibold text-white bg-primary hover:bg-accent px-6 py-3 rounded-md transition-colors duration-300 flex-shrink-0">
+                                        {t.career.openingsButton}
+                                    </button>
+                                </a>
                             </div>
                         ))}
                     </div>

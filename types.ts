@@ -24,6 +24,7 @@ export interface JobOpening {
     title: string;
     location: string;
     department: string;
+    link: string;
 }
 
 export type ChatMessage = {
