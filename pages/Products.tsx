@@ -17,10 +17,14 @@ const Products: React.FC<ProductsProps> = ({ onViewProduct }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const filteredProducts = useMemo(() => {
-        return t.products.productList.filter(product =>
+    return t.products.productList
+        .slice() // prevent mutating original array
+        .sort((a, b) => a.productName.localeCompare(b.productName))
+        .filter(product =>
             product.productName.toLowerCase().includes(searchTerm.toLowerCase())
         );
-    }, [t.products.productList, searchTerm]);
+}, [t.products.productList, searchTerm]);
+
 
     const paginatedProducts = useMemo(() => {
         const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
