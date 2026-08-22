@@ -80,6 +80,21 @@ const About = () => {
                 </div>
             </AnimatedSection>
 
+            <AnimatedSection>
+                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                     <div className="md:pr-10">
+                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">{t.about.leadershipTitle}</h2>
+                        <div className="text-lg text-gray-700 font-sans space-y-6 leading-relaxed">
+                            <p>{t.about.leadershipText1}</p>
+                            <p>{t.about.leadershipText2}</p>
+                        </div>
+                    </div>
+                    <div className="w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
+                        <img src="/img3.jpg" className="w-full h-full object-cover" />
+                    </div>
+                </div>
+            </AnimatedSection>
+
         </div>
       </div>
     </div>

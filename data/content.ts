@@ -55,8 +55,8 @@ export const content: Content = {
       heroTitle: 'Leading Pharmaceutical Excellence',
       heroSubtitle: 'Committed to improving global health through innovative medicines and quality healthcare solutions.',
       announcement: {
-          title: 'Join NAXCUURE at CPHI India 2025!',
-          text: 'Visit us at CPHI India – Hall RH-B, Stall RH.N18 to explore Naxcuure’s innovation in Pharmaceuticals, Nutraceuticals & Herbals.',
+          title: 'Join NAXCUURE at CPHI India 2026!',
+          text: 'Visit us at CPHI India to explore Naxcuure’s innovation in Pharmaceuticals, Nutraceuticals & Herbals.',
       },
       section1Title: 'Our Commitment to Excellence',
       section1Text: 'Naxcuure Pharma is a next-generation pharmaceutical company with a global presence. Naxcuure is dedicated to offering healthcare professionals and patients premium-quality, affordable specialty products and healthcare solutions designed to help patients lead healthier and happier lives.',
@@ -89,6 +89,9 @@ export const content: Content = {
       visionTitle: 'Our Vision',
       visionText: 'Our Vision is healthy and happy life for everyone. At Naxcuure, we dream of people all over the world living without suffering and physical pain. We have a clear goal – to provide access for absolutely everyone to the best medicines that enable people to live longer and maintain healthier and more active lifestyles. And in order to achieve it, our company is constantly striving to significantly expand the geography of its presence in the global pharmaceutical market.',
       valuesTitle: 'Our Core Values',
+      leadershipTitle: 'Leadership & Management',
+      leadershipText1: 'Naxcuure Healthcare is led by its Directors, Mr. Sonnnjay R Singh and Mr. Ashutosh Gupta, whose shared vision and strategic leadership drive the company’s commitment to excellence in pharmaceutical manufacturing and healthcare innovation.',
+      leadershipText2: 'Together, they guide the organization’s growth, strengthen its operational capabilities, and uphold the highest standards of quality, compliance, and integrity. Under their leadership, Naxcuure Healthcare continues to expand its presence across international markets while delivering reliable healthcare solutions that improve lives worldwide.',
      values: [
   { 
     title: 'Excellence', 
@@ -201,8 +204,8 @@ export const content: Content = {
             heroTitle: "Лидерство в фармацевтическом превосходстве",
             heroSubtitle: "Стремимся улучшать глобальное здоровье с помощью инновационных лекарств и качественных решений в области здравоохранения.",
             announcement: {
-                title: "Присоединяйтесь к NAXCUURE на CPHI India 2025!",
-                text: "Посетите нас на CPHI India – Зал RH-B, Стенд RH.N18, чтобы ознакомиться с инновациями Naxcuure в области фармацевтики, нутрицевтики и фитопрепаратов."
+                title: "Присоединяйтесь к NAXCUURE на CPHI India 2026!",
+                text: "Посетите нас на CPHI India, чтобы ознакомиться с инновациями Naxcuure в области фармацевтики, нутрицевтики и фитопрепаратов."
             },
             section1Title: "Наше стремление к совершенству",
             section1Text: "Naxcuure Pharma — это фармацевтическая компания нового поколения с глобальным присутствием. Naxcuure стремится предлагать медицинским работникам и пациентам высококачественные, доступные специализированные продукты и решения в области здравоохранения, разработанные, чтобы помочь пациентам вести более здоровый и счастливый образ жизни.",
@@ -235,6 +238,9 @@ export const content: Content = {
             visionTitle: "Наше Видение",
             visionText: "Наше Видение – здоровая и счастливая жизнь для каждого. В Naxcuure мы мечтаем о том, чтобы люди во всем мире жили без страданий и физической боли. У нас есть четкая цель – предоставить абсолютно каждому доступ к лучшим лекарствам, которые позволяют людям жить дольше и поддерживать более здоровый и активный образ жизни. И для достижения этой цели наша компания постоянно стремится значительно расширить географию своего присутствия на мировом фармацевтическом рынке.",
             valuesTitle: "Наши Основные Ценности",
+            leadershipTitle: "Руководство и Менеджмент",
+            leadershipText1: "Naxcuure Healthcare возглавляют ее директора, г-н Соннджай Р Сингх и г-н Ашутош Гупта, чье общее видение и стратегическое руководство стимулируют приверженность компании совершенству в фармацевтическом производстве и инновациях в области здравоохранения.",
+            leadershipText2: "Вместе они направляют рост организации, укрепляют ее операционные возможности и поддерживают высочайшие стандарты качества, соответствия нормативным требованиям и добросовестности. Под их руководством Naxcuure Healthcare продолжает расширять свое присутствие на международных рынках, предоставляя надежные решения в области здравоохранения, которые улучшают жизнь людей во всем мире.",
             values: [
                 {
                     title: "Совершенство",
@@ -344,8 +350,8 @@ fr: {
             heroTitle: "Leader de l'Excellence Pharmaceutique",
             heroSubtitle: "Engagés à améliorer la santé mondiale grâce à des médicaments innovants et des solutions de soins de santé de qualité.",
             announcement: {
-                title: "Rejoignez NAXCUURE au CPHI India 2025 !",
-                text: "Venez nous rendre visite au CPHI India – Hall RH-B, Stand RH.N18 pour découvrir les innovations de Naxcuure dans les domaines Pharmaceutique, Nutraceutique et Herbal."
+                title: "Rejoignez NAXCUURE au CPHI India 2026 !",
+                text: "Venez nous rendre visite au CPHI India pour découvrir les innovations de Naxcuure dans les domaines Pharmaceutique, Nutraceutique et Herbal."
             },
             section1Title: "Notre Engagement envers l'Excellence",
             section1Text: "Naxcuure Pharma est une entreprise pharmaceutique de nouvelle génération avec une présence mondiale. Naxcuure se consacre à offrir aux professionnels de la santé et aux patients des produits de spécialité et des solutions de soins de santé de qualité supérieure et abordables, conçus pour aider les patients à mener une vie plus saine et plus heureuse.",
@@ -378,6 +384,9 @@ fr: {
             visionTitle: "Notre Vision",
             visionText: "Notre Vision est une vie saine et heureuse pour tous. Chez Naxcuure, nous rêvons de personnes partout dans le monde vivant sans souffrance ni douleur physique. Nous avons un objectif clair : fournir l'accès absolu à tous aux meilleurs médicaments qui permettent aux gens de vivre plus longtemps et de maintenir un style de vie plus sain et plus actif. Et pour y parvenir, notre entreprise s'efforce constamment d'étendre considérablement la géographie de sa présence sur le marché pharmaceutique mondial.",
             valuesTitle: "Nos Valeurs Fondamentales",
+            leadershipTitle: "Direction et Gestion",
+            leadershipText1: "Naxcuure Healthcare est dirigée par ses directeurs, M. Sonnnjay R Singh et M. Ashutosh Gupta, dont la vision partagée et le leadership stratégique motivent l'engagement de l'entreprise envers l'excellence dans la fabrication pharmaceutique et l'innovation en matière de soins de santé.",
+            leadershipText2: "Ensemble, ils guident la croissance de l'organisation, renforcent ses capacités opérationnelles et maintiennent les normes les plus élevées de qualité, de conformité et d'intégrité. Sous leur direction, Naxcuure Healthcare continue d'étendre sa présence sur les marchés internationaux tout en fournissant des solutions de santé fiables qui améliorent des vies dans le monde entier.",
             values: [
                 {
                     title: "Excellence",
@@ -488,8 +497,8 @@ fr: {
             heroTitle: "Liderando la Excelencia Farmacéutica",
             heroSubtitle: "Comprometidos con la mejora de la salud global a través de medicinas innovadoras y soluciones sanitarias de calidad.",
             announcement: {
-                title: "¡Únase a NAXCUURE en CPHI India 2025!",
-                text: "Visítenos en CPHI India – Pabellón RH-B, Stand RH.N18 para explorar la innovación de Naxcuure en Productos Farmacéuticos, Nutracéuticos y Herbales."
+                title: "¡Únase a NAXCUURE en CPHI India 2026!",
+                text: "Visítenos en CPHI India para explorar la innovación de Naxcuure en Productos Farmacéuticos, Nutracéuticos y Herbales."
             },
             section1Title: "Nuestro Compromiso con la Excelencia",
             section1Text: "Naxcuure Pharma es una compañía farmacéutica de próxima generación con presencia global. Naxcuure se dedica a ofrecer a los profesionales de la salud y a los pacientes productos especializados y soluciones sanitarias asequibles y de primera calidad, diseñadas para ayudar a los pacientes a llevar vidas más sanas y felices.",
@@ -522,6 +531,9 @@ fr: {
             visionTitle: "Nuestra Visión",
             visionText: "Nuestra Visión es una vida sana y feliz para todos. En Naxcuure, soñamos con personas en todo el mundo viviendo sin sufrimiento ni dolor físico. Tenemos un objetivo claro: proporcionar acceso absoluto a todos a los mejores medicamentos que permitan a las personas vivir más tiempo y mantener estilos de vida más saludables y activos. Y para lograrlo, nuestra compañía se esfuerza constantemente por expandir significativamente la geografía de su presencia en el mercado farmacéutico global.",
             valuesTitle: "Nuestros Valores Fundamentales",
+            leadershipTitle: "Liderazgo y Gestión",
+            leadershipText1: "Naxcuure Healthcare está dirigida por sus directores, el Sr. Sonnnjay R Singh y el Sr. Ashutosh Gupta, cuya visión compartida y liderazgo estratégico impulsan el compromiso de la empresa con la excelencia en la fabricación farmacéutica y la innovación en el cuidado de la salud.",
+            leadershipText2: "Juntos, guían el crecimiento de la organización, fortalecen sus capacidades operativas y mantienen los más altos estándares de calidad, cumplimiento e integridad. Bajo su liderazgo, Naxcuure Healthcare continúa expandiendo su presencia en los mercados internacionales al tiempo que ofrece soluciones confiables de atención médica que mejoran vidas en todo el mundo.",
             values: [
                 {
                     title: "Excelencia",

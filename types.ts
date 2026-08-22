@@ -79,6 +79,9 @@ export interface Content {
       visionTitle: string;
       visionText: string;
       valuesTitle: string;
+      leadershipTitle: string;
+      leadershipText1: string;
+      leadershipText2: string;
       values: { title: string; text: string }[];
     };
     products: {
