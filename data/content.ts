@@ -56,7 +56,7 @@ export const content: Content = {
       heroSubtitle: 'Committed to improving global health through innovative medicines and quality healthcare solutions.',
       announcement: {
           title: 'Join NAXCUURE at CPHI India 2026!',
-          text: 'Visit us at CPHI India to explore Naxcuure’s innovation in Pharmaceuticals, Nutraceuticals & Herbals.',
+          text: 'Visit us at CPHI India to explore Naxcuure’s innovation in Pharmaceuticals, Nutraceuticals & Herbals. Stall Number: 1C42, Hall Number: 1',
       },
       section1Title: 'Our Commitment to Excellence',
       section1Text: 'Naxcuure Pharma is a next-generation pharmaceutical company with a global presence. Naxcuure is dedicated to offering healthcare professionals and patients premium-quality, affordable specialty products and healthcare solutions designed to help patients lead healthier and happier lives.',
@@ -205,7 +205,7 @@ export const content: Content = {
             heroSubtitle: "Стремимся улучшать глобальное здоровье с помощью инновационных лекарств и качественных решений в области здравоохранения.",
             announcement: {
                 title: "Присоединяйтесь к NAXCUURE на CPHI India 2026!",
-                text: "Посетите нас на CPHI India, чтобы ознакомиться с инновациями Naxcuure в области фармацевтики, нутрицевтики и фитопрепаратов."
+                text: "Посетите нас на CPHI India, чтобы ознакомиться с инновациями Naxcuure в области фармацевтики, нутрицевтики и фитопрепаратов. Стенд: 1C42, Зал: 1"
             },
             section1Title: "Наше стремление к совершенству",
             section1Text: "Naxcuure Pharma — это фармацевтическая компания нового поколения с глобальным присутствием. Naxcuure стремится предлагать медицинским работникам и пациентам высококачественные, доступные специализированные продукты и решения в области здравоохранения, разработанные, чтобы помочь пациентам вести более здоровый и счастливый образ жизни.",
@@ -351,7 +351,7 @@ fr: {
             heroSubtitle: "Engagés à améliorer la santé mondiale grâce à des médicaments innovants et des solutions de soins de santé de qualité.",
             announcement: {
                 title: "Rejoignez NAXCUURE au CPHI India 2026 !",
-                text: "Venez nous rendre visite au CPHI India pour découvrir les innovations de Naxcuure dans les domaines Pharmaceutique, Nutraceutique et Herbal."
+                text: "Venez nous rendre visite au CPHI India pour découvrir les innovations de Naxcuure dans les domaines Pharmaceutique, Nutraceutique et Herbal. Stand : 1C42, Hall : 1"
             },
             section1Title: "Notre Engagement envers l'Excellence",
             section1Text: "Naxcuure Pharma est une entreprise pharmaceutique de nouvelle génération avec une présence mondiale. Naxcuure se consacre à offrir aux professionnels de la santé et aux patients des produits de spécialité et des solutions de soins de santé de qualité supérieure et abordables, conçus pour aider les patients à mener une vie plus saine et plus heureuse.",
@@ -498,7 +498,7 @@ fr: {
             heroSubtitle: "Comprometidos con la mejora de la salud global a través de medicinas innovadoras y soluciones sanitarias de calidad.",
             announcement: {
                 title: "¡Únase a NAXCUURE en CPHI India 2026!",
-                text: "Visítenos en CPHI India para explorar la innovación de Naxcuure en Productos Farmacéuticos, Nutracéuticos y Herbales."
+                text: "Visítenos en CPHI India para explorar la innovación de Naxcuure en Productos Farmacéuticos, Nutracéuticos y Herbales. Stand: 1C42, Pabellón: 1"
             },
             section1Title: "Nuestro Compromiso con la Excelencia",
             section1Text: "Naxcuure Pharma es una compañía farmacéutica de próxima generación con presencia global. Naxcuure se dedica a ofrecer a los profesionales de la salud y a los pacientes productos especializados y soluciones sanitarias asequibles y de primera calidad, diseñadas para ayudar a los pacientes a llevar vidas más sanas y felices.",
