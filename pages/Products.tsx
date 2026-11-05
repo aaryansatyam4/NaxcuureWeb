@@ -47,7 +47,7 @@ const Products: React.FC = () => {
 
   return (
     <>
-      <PageHero title={t.products.title} subtitle={u.productsHeroSubtitle} backgroundImage="/images/lab-research.webp" crumb={t.nav.products} />
+      <PageHero title={t.products.title} subtitle={u.productsHeroSubtitle} backgroundImage="/images/lab-research.webp" crumb={t.nav.products} imageRatio={16 / 9} />
 
       <section className="shell pt-16 sm:pt-24">
         <AnimatedSection>

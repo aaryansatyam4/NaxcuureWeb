@@ -7,6 +7,8 @@ import ArrowLink from '../components/ArrowLink';
 import CategoryCard from '../components/CategoryCard';
 import ContactForm from '../components/ContactForm';
 import DotGlobe from '../components/DotGlobe';
+import VideoCard from '../components/VideoCard';
+import { videos } from '../data/videos';
 import { categories } from '../data/categories';
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon, MegaphoneIcon, MapPinIcon, PhoneIcon, MailIcon } from '../components/icons';
 
@@ -40,11 +42,16 @@ const Hero: React.FC = () => {
 
   return (
     <section className="frame pt-2 sm:pt-3 lg:pt-4">
-      <div className="grain relative isolate h-[calc(100svh-1rem)] max-h-[980px] min-h-[680px] overflow-hidden rounded-4xl bg-primary-900 lg:rounded-5xl">
+      <div className="grain relative isolate overflow-hidden rounded-4xl bg-primary-900 lg:h-[calc(100svh-1rem)] lg:max-h-[980px] lg:min-h-[680px] lg:rounded-5xl">
+        {/* Phones/tablets: soft colour wash instead of a cropped full-screen photo */}
+        <div className="absolute -right-24 -top-24 -z-10 h-80 w-80 rounded-full bg-accent/25 blur-3xl lg:hidden" />
+        <div className="absolute -bottom-32 -left-24 -z-10 h-80 w-80 rounded-full bg-primary blur-3xl lg:hidden" />
+        {/* Large screens: full-bleed slideshow */}
+        <div className="absolute inset-0 -z-10 hidden lg:block">
         {SLIDES.map((s, i) => (
           <div
             key={s.src}
-            className={`absolute inset-0 -z-10 transition-opacity duration-[1400ms] ease-in-out ${i === current ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute inset-0 transition-opacity duration-[1400ms] ease-in-out ${i === current ? 'opacity-100' : 'opacity-0'}`}
             aria-hidden={i !== current}
           >
             <img
@@ -57,10 +64,11 @@ const Hero: React.FC = () => {
             />
           </div>
         ))}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/85 via-ink/45 to-ink/10" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/80 via-transparent to-ink/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/45 to-ink/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-ink/40" />
+        </div>
 
-        <div className="shell relative flex h-full flex-col justify-between pb-6 pt-28 sm:pb-8 sm:pt-32 lg:pb-10 lg:pt-36">
+        <div className="shell relative flex flex-col justify-between pb-6 pt-28 sm:pb-8 sm:pt-32 lg:h-full lg:pb-10 lg:pt-36">
           {/* Title + intro */}
           <div>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/90 ring-1 ring-white/20 backdrop-blur-md animate-fade-up">
@@ -111,8 +119,32 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
+          {/* Phones/tablets: slideshow shown at the photos' natural shape so nothing is cut off */}
+          <div className="relative mt-10 aspect-[3/2] overflow-hidden rounded-3xl ring-1 ring-white/10 lg:hidden">
+            {SLIDES.map((s, i) => (
+              <img
+                key={s.src}
+                src={s.src}
+                alt=""
+                aria-hidden={i !== current}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ${i === current ? 'opacity-100' : 'opacity-0'}`}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            ))}
+            <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-1.5 bg-gradient-to-t from-ink/60 to-transparent pb-3 pt-8">
+              {SLIDES.map((s, i) => (
+                <button
+                  key={s.src}
+                  onClick={() => go(i - current)}
+                  aria-label={`${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-500 ${i === current ? 'w-6 bg-white' : 'w-1.5 bg-white/50'}`}
+                />
+              ))}
+            </div>
+          </div>
+
           {/* Bottom row: category chips + CPHI card */}
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mt-6 flex flex-col gap-6 lg:mt-0 lg:flex-row lg:items-end lg:justify-between">
             <div className="flex max-w-2xl flex-wrap gap-2">
               {chips.map((c, i) => (
                 <Link
@@ -160,9 +192,9 @@ const Announcement: React.FC = () => {
             </div>
             <p className="text-2xl font-medium leading-snug text-white sm:text-3xl lg:text-[2.1rem] text-balance">{t.home.announcement.text}</p>
           </div>
-          <div className="relative min-h-[280px] lg:min-h-[440px]">
+          <div className="relative aspect-[3/2] lg:aspect-auto lg:min-h-[440px]">
             <img src="/images/team-cphi.webp" alt="Naxcuure team at CPHI India" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/10 to-transparent lg:via-transparent" />
+            <div className="absolute inset-y-0 left-0 hidden w-1/6 bg-gradient-to-r from-primary to-transparent lg:block" />
           </div>
         </div>
       </AnimatedSection>
@@ -185,10 +217,10 @@ const Commitment: React.FC = () => {
 
       <div className="mt-14 grid gap-5 lg:mt-20 lg:grid-cols-12">
         <AnimatedSection className="lg:col-span-7">
-          <div className="group relative h-[340px] overflow-hidden rounded-4xl sm:h-[460px] lg:h-full lg:min-h-[520px]">
+          <div className="group relative aspect-video overflow-hidden rounded-4xl lg:aspect-auto lg:h-full lg:min-h-[520px]">
             <img src="/images/factory-aerial.webp" alt="Naxcuure manufacturing facility" className="h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent" />
-            <img src="/images/logo-white.png" alt="" className="absolute bottom-7 left-7 h-8 w-auto opacity-90" loading="lazy" />
+            <img src="/images/logo-white.png" alt="" className="absolute bottom-7 left-7 hidden h-8 w-auto opacity-90 lg:block" loading="lazy" />
           </div>
         </AnimatedSection>
         <div className="grid gap-5 lg:col-span-5">
@@ -259,6 +291,25 @@ const Portfolio: React.FC = () => {
   );
 };
 
+const Videos: React.FC = () => {
+  const { u } = useLanguage();
+  const labelFor = (tag: string) => (tag === 'fda' ? 'FDA' : u.marketing);
+  return (
+    <section className="shell py-16 sm:py-24">
+      <AnimatedSection>
+        <SectionHeading index="03" label="Naxcuure" title={u.videos} />
+      </AnimatedSection>
+      <div className="mt-10 grid gap-5 lg:mt-14 lg:grid-cols-2">
+        {videos.map((v, i) => (
+          <AnimatedSection key={v.id} delay={`${i * 120}ms`}>
+            <VideoCard id={v.id} label={labelFor(v.tag)} playLabel={u.playVideo} />
+          </AnimatedSection>
+        ))}
+      </div>
+    </section>
+  );
+};
+
 const GlobalPresence: React.FC = () => {
   const { t } = useLanguage();
   return (
@@ -267,7 +318,7 @@ const GlobalPresence: React.FC = () => {
         <div className="absolute left-1/2 top-1/2 -z-10 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/40 blur-[140px]" />
         <div className="shell grid items-center gap-6 py-16 sm:py-20 lg:grid-cols-2 lg:py-28">
           <AnimatedSection>
-            <SectionHeading index="03" label="Naxcuure" title={t.home.section2Title} light />
+            <SectionHeading index="04" label="Naxcuure" title={t.home.section2Title} light />
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/65">{t.home.section2Text}</p>
           </AnimatedSection>
           <AnimatedSection delay="150ms" className="relative mx-auto aspect-square w-full max-w-[520px]">
@@ -288,7 +339,7 @@ const Purpose: React.FC = () => {
       <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
         <AnimatedSection className="lg:col-span-6">
           <div className="relative">
-            <div className="h-[380px] overflow-hidden rounded-4xl sm:h-[520px]">
+            <div className="aspect-video overflow-hidden rounded-4xl lg:aspect-auto lg:h-[520px]">
               <img src="/images/lab-qc.webp" alt="Quality control laboratory" className="h-full w-full object-cover" loading="lazy" />
             </div>
             <div className="absolute -bottom-6 -right-3 hidden h-40 w-56 overflow-hidden rounded-3xl border-[6px] border-canvas shadow-xl sm:block lg:-right-10">
@@ -297,7 +348,7 @@ const Purpose: React.FC = () => {
           </div>
         </AnimatedSection>
         <AnimatedSection className="lg:col-span-6" delay="120ms">
-          <SectionHeading index="04" label={t.about.missionTitle} title={t.home.section3Title} />
+          <SectionHeading index="05" label={t.about.missionTitle} title={t.home.section3Title} />
           <p className="lead mt-8">{t.home.section3Text}</p>
         </AnimatedSection>
       </div>
@@ -314,7 +365,7 @@ const ContactSection: React.FC = () => {
         <AnimatedSection className="lg:col-span-5">
           <div className="flex h-full flex-col gap-5">
             <div className="card p-8 sm:p-10">
-              <SectionHeading index="05" label={u.contact} title={c.title} />
+              <SectionHeading index="06" label={u.contact} title={c.title} />
               <p className="body mt-6">{c.subtitle}</p>
               <div className="mt-8 space-y-4 text-sm">
                 <div className="flex gap-4">
@@ -361,6 +412,7 @@ const Home: React.FC = () => (
     <Announcement />
     <Commitment />
     <Portfolio />
+    <Videos />
     <GlobalPresence />
     <Purpose />
     <ContactSection />

@@ -29,6 +29,9 @@ export const ui: Record<Language, {
   next: string;
   backHome: string;
   notFound: string;
+  videos: string;
+  marketing: string;
+  playVideo: string;
 }> = {
   en: {
     contact: 'Contact',
@@ -58,6 +61,9 @@ export const ui: Record<Language, {
     next: 'Next',
     backHome: 'Back to Home',
     notFound: 'Page not found.',
+    videos: 'Videos',
+    marketing: 'Marketing',
+    playVideo: 'Play video',
   },
   ru: {
     contact: 'Контакты',
@@ -87,6 +93,9 @@ export const ui: Record<Language, {
     next: 'Вперёд',
     backHome: 'На главную',
     notFound: 'Страница не найдена.',
+    videos: 'Видео',
+    marketing: 'Маркетинг',
+    playVideo: 'Смотреть видео',
   },
   fr: {
     contact: 'Contact',
@@ -116,6 +125,9 @@ export const ui: Record<Language, {
     next: 'Suivant',
     backHome: "Retour à l'Accueil",
     notFound: 'Page introuvable.',
+    videos: 'Vidéos',
+    marketing: 'Marketing',
+    playVideo: 'Lire la vidéo',
   },
   es: {
     contact: 'Contacto',
@@ -145,5 +157,8 @@ export const ui: Record<Language, {
     next: 'Siguiente',
     backHome: 'Volver al Inicio',
     notFound: 'Página no encontrada.',
+    videos: 'Videos',
+    marketing: 'Marketing',
+    playVideo: 'Reproducir video',
   },
 };
