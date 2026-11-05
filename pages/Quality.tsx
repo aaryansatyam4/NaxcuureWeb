@@ -2,65 +2,89 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import AnimatedSection from '../components/AnimatedSection';
 import PageHero from '../components/PageHero';
-import FlipCard from '../components/FlipCard';
-import { ShieldCheckIcon, UsersIcon } from '../components/icons';
+import SectionHeading from '../components/SectionHeading';
+import { ShieldCheckIcon, AwardIcon, MicroscopeIcon } from '../components/icons';
 
-const Quality = () => {
-  const { t } = useLanguage();
+const Quality: React.FC = () => {
+  const { t, u } = useLanguage();
+  const q = t.quality;
 
   return (
-    <div className="bg-light-bg text-gray-800">
-      <PageHero 
-        title={t.quality.title}
-        subtitle="Every pill, every batch, every time."
-        backgroundImage="https://images.pexels.com/photos/3825527/pexels-photo-3825527.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-      />
-      <div className="py-24 md:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32">
-            <AnimatedSection>
-                <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-                    <div className="w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
-                        <img src="https://images.pexels.com/photos/2280551/pexels-photo-2280551.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Quality Control Laboratory" className="w-full h-full object-cover" />
-                    </div>
-                     <div className="text-lg text-gray-700 font-sans space-y-6 leading-relaxed md:pl-10">
-                        <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">{t.quality.stringentStandardsTitle}</h2>
-                        <p>{t.quality.p1}</p>
-                        <p>{t.quality.p2}</p>
-                    </div>
-                </div>
-            </AnimatedSection>
+    <>
+      <PageHero title={q.title} subtitle={u.qualityHeroSubtitle} backgroundImage="/images/lab-qc.webp" crumb={t.nav.quality} />
 
-            <AnimatedSection>
-                <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-                    <div className="order-2 md:order-1 text-lg text-gray-700 font-sans space-y-6 leading-relaxed md:pr-10">
-                        <h3 className="text-4xl md:text-5xl font-serif text-primary mb-6">{t.quality.section2Title}</h3>
-                        <p>{t.quality.section2Text}</p>
-                        <p>{t.quality.p3}</p>
-                    </div>
-                    <div className="order-1 md:order-2 w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-2xl">
-                        <img src="https://images.pexels.com/photos/7579831/pexels-photo-7579831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Manufacturing Process" className="w-full h-full object-cover" />
-                    </div>
-                </div>
-            </AnimatedSection>
-
-            <AnimatedSection className="text-center">
-                <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-16">{t.quality.commitmentTitle}</h2>
-                <div className="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <FlipCard
-                        icon={<ShieldCheckIcon className="w-8 h-8"/>}
-                        title={t.quality.patientSafetyTitle}
-                        text={t.quality.patientSafetyText}
-                    />
-                    <FlipCard
-                        icon={<UsersIcon className="w-8 h-8"/>}
-                        title={t.quality.certificationsTitle}
-                        text={t.quality.certificationsText}
-                    />
-                </div>
-            </AnimatedSection>
+      {/* Stringent standards */}
+      <section className="shell py-16 sm:py-24 lg:py-32">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          <AnimatedSection className="order-2 lg:order-1 lg:col-span-6">
+            <div className="relative">
+              <div className="h-[420px] overflow-hidden rounded-4xl sm:h-[560px]">
+                <img src="/images/lab-research.webp" alt="Quality control laboratory" className="h-full w-full object-cover" loading="lazy" />
+              </div>
+              <div className="absolute -bottom-6 left-6 flex items-center gap-4 rounded-3xl bg-white p-4 pr-6 shadow-2xl sm:left-10 animate-float">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-accent text-white"><ShieldCheckIcon className="h-6 w-6" /></span>
+                <span className="text-sm font-semibold uppercase tracking-wide text-ink">{q.patientSafetyTitle}</span>
+              </div>
+            </div>
+          </AnimatedSection>
+          <AnimatedSection className="order-1 lg:order-2 lg:col-span-6" delay="120ms">
+            <SectionHeading index="01" label={t.nav.quality} title={q.stringentStandardsTitle} />
+            <p className="mt-10 text-xl font-medium leading-relaxed text-ink sm:text-2xl">{q.p1}</p>
+            <p className="body mt-6">{q.p2}</p>
+          </AnimatedSection>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* Advanced quality systems */}
+      <section className="frame py-4 sm:py-8">
+        <div className="grain relative isolate overflow-hidden rounded-4xl bg-ink lg:rounded-5xl">
+          <div className="absolute -left-40 top-0 -z-10 h-[32rem] w-[32rem] rounded-full bg-primary/50 blur-[130px]" />
+          <div className="shell grid items-center gap-12 py-16 sm:py-24 lg:grid-cols-12 lg:gap-16 lg:py-28">
+            <AnimatedSection className="lg:col-span-7">
+              <SectionHeading index="02" label={t.nav.quality} title={q.section2Title} light />
+              <p className="mt-10 text-lg leading-relaxed text-white/75">{q.section2Text}</p>
+              <p className="mt-6 text-base leading-[1.8] text-white/55">{q.p3}</p>
+            </AnimatedSection>
+            <AnimatedSection className="lg:col-span-5" delay="150ms">
+              <div className="relative">
+                <div className="aspect-[4/5] overflow-hidden rounded-4xl">
+                  <img src="/images/lab-digital.webp" alt="Advanced quality systems" className="h-full w-full object-cover" loading="lazy" />
+                </div>
+                <span className="absolute -right-3 -top-3 grid h-24 w-24 place-items-center rounded-full bg-accent text-white shadow-2xl animate-spinslow [animation-duration:30s]">
+                  <MicroscopeIcon className="h-9 w-9" />
+                </span>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* Quality promise */}
+      <section className="shell py-16 sm:py-24 lg:py-32">
+        <AnimatedSection>
+          <SectionHeading index="03" label={t.nav.quality} title={q.commitmentTitle} center className="max-w-4xl" />
+          <p className="lead mx-auto mt-8 max-w-3xl text-center">{q.commitmentText}</p>
+        </AnimatedSection>
+        <div className="mt-14 grid gap-5 lg:grid-cols-2">
+          <AnimatedSection>
+            <article className="group card relative h-full overflow-hidden p-8 transition-all duration-500 hover:-translate-y-1 sm:p-12">
+              <ShieldCheckIcon className="absolute -right-10 -top-10 h-56 w-56 text-primary/[0.05]" strokeWidth={1} />
+              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-primary text-white"><ShieldCheckIcon className="h-7 w-7" /></span>
+              <h3 className="mt-10 text-3xl font-semibold uppercase tracking-tight text-ink">{q.patientSafetyTitle}</h3>
+              <p className="body mt-5">{q.patientSafetyText}</p>
+            </article>
+          </AnimatedSection>
+          <AnimatedSection delay="120ms">
+            <article className="grain relative isolate h-full overflow-hidden rounded-4xl bg-gradient-to-br from-accent to-[#C95C08] p-8 text-white sm:p-12">
+              <AwardIcon className="absolute -right-10 -top-10 -z-10 h-56 w-56 text-white/10" strokeWidth={1} />
+              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-white text-accent"><AwardIcon className="h-7 w-7" /></span>
+              <h3 className="mt-10 text-3xl font-semibold uppercase tracking-tight">{q.certificationsTitle}</h3>
+              <p className="mt-5 text-base leading-[1.8] text-white/85 sm:text-[17px]">{q.certificationsText}</p>
+            </article>
+          </AnimatedSection>
+        </div>
+      </section>
+    </>
   );
 };
 

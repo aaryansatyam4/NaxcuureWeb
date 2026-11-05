@@ -1,75 +1,102 @@
 import React from 'react';
 
-export const MenuIcon = ({ className }: { className?: string }) => (
-  <svg className={className} xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+type IconProps = { className?: string; strokeWidth?: number };
+
+const Icon = ({ className, strokeWidth = 1.75, children }: IconProps & { children: React.ReactNode }) => (
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {children}
   </svg>
 );
 
-export const CloseIcon = ({ className }: { className?: string }) => (
-  <svg className={className} xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+export const MenuIcon = (p: IconProps) => <Icon {...p}><path d="M4 7h16M4 12h16M4 17h10" /></Icon>;
+export const CloseIcon = (p: IconProps) => <Icon {...p}><path d="M6 18 18 6M6 6l12 12" /></Icon>;
+export const GlobeIcon = (p: IconProps) => (
+  <Icon {...p}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></Icon>
+);
+export const ChevronDownIcon = (p: IconProps) => <Icon {...p}><path d="m6 9 6 6 6-6" /></Icon>;
+export const ArrowUpRightIcon = (p: IconProps) => <Icon {...p}><path d="M7 17 17 7M8 7h9v9" /></Icon>;
+export const ArrowRightIcon = (p: IconProps) => <Icon {...p}><path d="M5 12h14M13 6l6 6-6 6" /></Icon>;
+export const ArrowLeftIcon = (p: IconProps) => <Icon {...p}><path d="M19 12H5M11 18l-6-6 6-6" /></Icon>;
+export const SearchIcon = (p: IconProps) => <Icon {...p}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></Icon>;
+export const CheckIcon = (p: IconProps) => <Icon {...p}><path d="m5 12.5 4.5 4.5L19 7.5" /></Icon>;
+export const MegaphoneIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1ZM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></Icon>
+);
+export const ShieldCheckIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z" /><path d="m8.8 12.2 2.2 2.2 4.3-4.4" /></Icon>
+);
+export const LightBulbIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V16h5v-.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3Z" /></Icon>
+);
+export const UsersIcon = (p: IconProps) => (
+  <Icon {...p}><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.2A6.5 6.5 0 0 1 21.5 20" /></Icon>
+);
+export const HeartIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M12 20s-7.5-4.4-7.5-10.1A4.4 4.4 0 0 1 12 7.1a4.4 4.4 0 0 1 7.5 2.8C19.5 15.6 12 20 12 20Z" /></Icon>
+);
+export const ChatBubbleIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.1A8 8 0 1 1 20 12Z" /><path d="M8.5 12h.01M12 12h.01M15.5 12h.01" strokeWidth={2.5} /></Icon>
+);
+export const SendIcon = (p: IconProps) => <Icon {...p}><path d="M21 3 10 14M21 3l-7 18-4-7-7-4 18-7Z" /></Icon>;
+export const SpinnerIcon = ({ className }: IconProps) => (
+  <svg className={`animate-spin ${className ?? ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z" />
   </svg>
 );
-
-export const GlobeIcon = ({ className }: { className?: string }) => (
-  <svg className={className} xmlns="http://www.w.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m0 0a9 9 0 019-9m-9 9a9 9 0 009 9" />
-  </svg>
+export const MapPinIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" /></Icon>
 );
-
-export const ChevronDownIcon = ({ className }: { className?: string }) => (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-    </svg>
+export const PhoneIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M5 4h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.1 6.1l1.4-2.3L20 15.5V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" /></Icon>
 );
-
-export const MegaphoneIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 100 12h5.25a2.25 2.25 0 002.25-2.25V8.25a2.25 2.25 0 00-2.25-2.25H10.5z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11.25a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-    </svg>
+export const MailIcon = (p: IconProps) => (
+  <Icon {...p}><rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m4 7 8 6 8-6" /></Icon>
 );
-
-export const ShieldCheckIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" />
-    </svg>
+export const TabletIcon = (p: IconProps) => (
+  <Icon {...p}><circle cx="12" cy="12" r="8" /><path d="M6.5 17.5 17.5 6.5" /></Icon>
 );
-
-export const LightBulbIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-11.25H10.5a6.01 6.01 0 001.5 11.25v.007zM12 18h.008v.008H12V18zm0 0h-.008v.008H12V18zm-2.25-3h4.5M12 21a2.25 2.25 0 01-2.25-2.25v-.838a2.25 2.25 0 012.25-2.25h.001a2.25 2.25 0 012.25 2.25v.838A2.25 2.25 0 0112 21z" />
-    </svg>
+export const CapsuleIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M10.5 20.5a5 5 0 0 1-7-7l6-6a5 5 0 0 1 7 7l-6 6Z" /><path d="m7 10.5 6.5 6.5" /></Icon>
 );
-
-export const UsersIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-4.663M12 3.375c-3.442 0-6.25 2.808-6.25 6.25s2.808 6.25 6.25 6.25 6.25-2.808 6.25-6.25-2.808-6.25-6.25-6.25z" />
-    </svg>
+export const SachetIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M6 3h12l-1 3v13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6L6 3Z" /><path d="M7 6h10M10 12h4M12 10v4" /></Icon>
 );
-
-export const HeartIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-    </svg>
+export const FlaskIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3" /><path d="M7 15h10" /></Icon>
 );
-
-export const ChatBubbleIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-    </svg>
+export const AwardIcon = (p: IconProps) => (
+  <Icon {...p}><circle cx="12" cy="9" r="6" /><path d="m8.5 14 -1.5 7 5-2.5 5 2.5-1.5-7" /></Icon>
 );
-
-export const SendIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-    </svg>
+export const SparkleIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6" /></Icon>
 );
-
-export const SpinnerIcon = ({ className }: { className?: string }) => (
-    <svg className={`animate-spin ${className}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-    </svg>
+export const TrendingUpIcon = (p: IconProps) => <Icon {...p}><path d="m3 17 6-6 4 4 8-8M15 7h6v6" /></Icon>;
+export const BookIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z" /><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" /></Icon>
 );
+export const BriefcaseIcon = (p: IconProps) => (
+  <Icon {...p}><rect x="3" y="7" width="18" height="13" rx="2.5" /><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7M3 13h18" /></Icon>
+);
+export const MicroscopeIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M6 21h12M9 17h6M12 17a5 5 0 0 0 5-5M10 4l4 2-3 6-4-2 3-6ZM8.5 11 7 14" /></Icon>
+);
+export const AtomIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="1.5" />
+    <ellipse cx="12" cy="12" rx="9.5" ry="4" />
+    <ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(60 12 12)" />
+    <ellipse cx="12" cy="12" rx="9.5" ry="4" transform="rotate(120 12 12)" />
+  </Icon>
+);
+export const GlobeGridIcon = GlobeIcon;
