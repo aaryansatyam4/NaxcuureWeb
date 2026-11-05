@@ -4,7 +4,7 @@
 
 @layer base {
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body { @apply bg-canvas text-ink font-sans antialiased; }
+  body { @apply bg-canvas text-ink font-sans antialiased; overflow-x: clip; }
   ::selection { background: #393185; color: #fff; }
   img { @apply select-none; }
 }
@@ -14,8 +14,8 @@
   .frame { @apply mx-2 sm:mx-3 lg:mx-4; }
   .eyebrow { @apply inline-flex items-center gap-2 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-primary/70; }
   .eyebrow-dot { @apply h-1.5 w-1.5 rounded-full bg-accent; }
-  .display { @apply font-display font-semibold uppercase tracking-tightest leading-[0.95]; }
-  .h-section { @apply display text-[2.1rem] sm:text-5xl lg:text-6xl text-ink; }
+  .display { @apply font-display font-semibold uppercase tracking-tightest leading-[0.95]; hyphens: auto; overflow-wrap: break-word; }
+  .h-section { @apply display text-[1.9rem] min-[400px]:text-[2.1rem] sm:text-5xl lg:text-6xl text-ink; }
   .lead { @apply text-lg sm:text-xl leading-relaxed text-ink/70; }
   .body { @apply text-base sm:text-[17px] leading-[1.8] text-ink/65; }
   .btn { @apply inline-flex items-center gap-3 rounded-full font-semibold text-sm transition-all duration-300; }

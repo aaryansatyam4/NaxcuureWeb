@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import ArrowLink from './ArrowLink';
 import { MapPinIcon, PhoneIcon, MailIcon, ArrowUpRightIcon } from './icons';
@@ -7,6 +7,9 @@ import { MapPinIcon, PhoneIcon, MailIcon, ArrowUpRightIcon } from './icons';
 const Footer: React.FC = () => {
   const { t, u } = useLanguage();
   const c = t.home.contactSection;
+  const { pathname } = useLocation();
+  // Home and Contact already end with a full contact section — skip the repeat CTA there.
+  const showCta = !['/', '/contact'].includes(pathname.toLowerCase());
 
   const links = [
     { to: '/', label: t.nav.home },
@@ -23,8 +26,9 @@ const Footer: React.FC = () => {
         <div className="absolute -left-40 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/50 blur-[120px]" />
         <div className="absolute -bottom-40 right-0 -z-10 h-[24rem] w-[24rem] rounded-full bg-accent/20 blur-[120px]" />
 
-        <div className="shell pt-16 sm:pt-20 lg:pt-24">
+        <div className={`shell ${showCta ? 'pt-16 sm:pt-20 lg:pt-24' : 'pt-4'}`}>
           {/* CTA */}
+          {showCta && (
           <div className="grid gap-10 border-b border-white/10 pb-14 lg:grid-cols-12 lg:items-end lg:pb-20">
             <div className="lg:col-span-8">
               <div className="eyebrow mb-5 !text-white/50">
@@ -37,6 +41,7 @@ const Footer: React.FC = () => {
               <ArrowLink to="/contact" variant="light">{u.enquire}</ArrowLink>
             </div>
           </div>
+          )}
 
           {/* Columns */}
           <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12 lg:py-16">

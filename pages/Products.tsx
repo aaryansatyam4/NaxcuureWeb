@@ -3,10 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import AnimatedSection from '../components/AnimatedSection';
 import PageHero from '../components/PageHero';
-import SectionHeading from '../components/SectionHeading';
 import ProductCard, { FormIcon } from '../components/ProductCard';
 import { catalogue, categories, dosageForms, DosageForm } from '../data/catalogue';
-import { SearchIcon, CloseIcon, ChevronDownIcon } from '../components/icons';
+import { SearchIcon, CloseIcon } from '../components/icons';
 
 const PAGE_SIZE = 24;
 const FORMS: Exclude<DosageForm, ''>[] = ['tablet', 'capsule', 'sachet'];
@@ -51,14 +50,13 @@ const Products: React.FC = () => {
       <PageHero title={t.products.title} subtitle={u.productsHeroSubtitle} backgroundImage="/images/lab-research.webp" crumb={t.nav.products} />
 
       <section className="shell pt-16 sm:pt-24">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <AnimatedSection className="lg:col-span-6">
-            <SectionHeading index="01" label={t.nav.products} title={t.products.title} />
-          </AnimatedSection>
-          <AnimatedSection className="lg:col-span-6" delay="100ms">
-            <p className="lead">{t.products.intro}</p>
-          </AnimatedSection>
-        </div>
+        <AnimatedSection>
+          <div className="eyebrow mb-5">
+            <span className="eyebrow-dot" />
+            <span className="text-ink">01</span> / <span>{t.nav.products}</span>
+          </div>
+          <p className="max-w-4xl text-2xl font-medium leading-snug tracking-tight text-ink sm:text-3xl lg:text-[2.4rem] text-balance">{t.products.intro}</p>
+        </AnimatedSection>
       </section>
 
       {/* Filters */}
@@ -78,20 +76,6 @@ const Products: React.FC = () => {
                 />
               </label>
               <div className="flex gap-2 overflow-x-auto no-scrollbar">
-                <div className="relative shrink-0">
-                  <select
-                    value={category}
-                    onChange={(e) => updateParam('category', e.target.value)}
-                    className="h-full appearance-none rounded-full bg-canvas py-3.5 pl-5 pr-11 text-sm font-medium text-ink ring-1 ring-ink/10 focus:outline-none focus:ring-2 focus:ring-primary"
-                    aria-label={u.category}
-                  >
-                    <option value="">{t.products.filterAll}</option>
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>{c.label[language]}</option>
-                    ))}
-                  </select>
-                  <ChevronDownIcon className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/50" />
-                </div>
                 <div className="flex shrink-0 rounded-full bg-canvas p-1 ring-1 ring-ink/10">
                   <button
                     onClick={() => updateParam('form', '')}

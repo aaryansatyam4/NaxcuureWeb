@@ -47,8 +47,8 @@ const About: React.FC = () => {
       <section className="frame py-4 sm:py-8">
         <AnimatedSection>
           <div className="relative isolate flex min-h-[560px] items-end overflow-hidden rounded-4xl lg:min-h-[680px] lg:rounded-5xl">
-            <img src="/images/team-cphi.webp" alt="The Naxcuure team" className="absolute inset-0 -z-10 h-full w-full object-cover" style={{ objectPosition: 'center 35%' }} loading="lazy" />
-            <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/95 via-ink/40 to-transparent" />
+            <img src="/images/team-cphi.webp" alt="The Naxcuure team" className="absolute inset-0 -z-10 h-full w-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" />
+            <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/0" />
             <div className="shell grid gap-8 pb-10 sm:pb-14 lg:grid-cols-12 lg:items-end lg:pb-16">
               <div className="lg:col-span-6">
                 <SectionHeading index="02" label="Naxcuure" title={a.cultureTitle} light />
@@ -117,7 +117,7 @@ const About: React.FC = () => {
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <AnimatedSection className="lg:col-span-5">
             <div className="relative">
-              <div className="absolute -inset-3 -z-10 rotate-[-3deg] rounded-[2.5rem] bg-gradient-to-br from-accent to-primary opacity-90" />
+              <div className="absolute -inset-1.5 sm:-inset-3 -z-10 rotate-[-2deg] sm:rotate-[-3deg] rounded-[2.5rem] bg-gradient-to-br from-accent to-primary opacity-90" />
               <div className="aspect-[4/5] overflow-hidden rounded-4xl bg-primary-50">
                 <img src="/images/directors.webp" alt="Directors of Naxcuure Healthcare" className="h-full w-full object-cover object-top" loading="lazy" />
               </div>

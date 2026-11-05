@@ -136,14 +136,13 @@ const Chatbot: React.FC = () => {
       <div className={`fixed bottom-5 right-5 z-40 transition-all duration-300 sm:bottom-7 sm:right-7 ${isOpen ? 'pointer-events-none scale-90 opacity-0' : 'scale-100 opacity-100'}`}>
         <button
           onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-3 rounded-full bg-ink p-2 pr-2 text-white shadow-[0_20px_40px_-12px_rgba(15,14,36,0.5)] transition-all hover:bg-primary sm:pr-5"
+          className="group flex items-center rounded-full bg-ink p-1.5 text-white shadow-[0_20px_40px_-12px_rgba(15,14,36,0.5)] ring-2 ring-white/50 transition-all hover:bg-primary"
           aria-label="Open chat"
         >
           <span className="relative grid h-11 w-11 place-items-center rounded-full bg-accent">
             <ChatBubbleIcon className="h-5 w-5" />
             <span className="absolute right-0 top-0 h-3 w-3 rounded-full border-2 border-ink bg-emerald-400" />
           </span>
-          <span className="hidden text-sm font-semibold sm:inline">NaxBot</span>
         </button>
       </div>
 

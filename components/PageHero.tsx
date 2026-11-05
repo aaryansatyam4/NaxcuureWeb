@@ -38,7 +38,7 @@ const PageHero: React.FC<PageHeroProps> = ({ title, subtitle, backgroundImage, c
                   </>
                 )}
               </div>
-              <h1 className="display text-[2.6rem] sm:text-6xl lg:text-7xl xl:text-[5.2rem] text-white text-balance">{title}</h1>
+              <h1 className="display text-[2.1rem] min-[400px]:text-[2.4rem] sm:text-6xl lg:text-7xl xl:text-[5.2rem] text-white text-balance">{title}</h1>
             </div>
             <div className="lg:col-span-4 animate-fade-up [animation-delay:200ms]">
               <div className="flex gap-4 border-l-2 border-accent pl-5">

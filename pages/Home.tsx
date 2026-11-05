@@ -40,7 +40,7 @@ const Hero: React.FC = () => {
 
   return (
     <section className="frame pt-2 sm:pt-3 lg:pt-4">
-      <div className="grain relative isolate h-[100svh] max-h-[980px] min-h-[680px] overflow-hidden rounded-4xl bg-primary-900 lg:rounded-5xl">
+      <div className="grain relative isolate h-[calc(100svh-1rem)] max-h-[980px] min-h-[680px] overflow-hidden rounded-4xl bg-primary-900 lg:rounded-5xl">
         {SLIDES.map((s, i) => (
           <div
             key={s.src}
@@ -60,51 +60,53 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/85 via-ink/45 to-ink/10" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-ink/80 via-transparent to-ink/40" />
 
-        <div className="shell relative flex h-full flex-col justify-between pb-6 pt-32 sm:pb-8 lg:pb-10 lg:pt-40">
+        <div className="shell relative flex h-full flex-col justify-between pb-6 pt-28 sm:pb-8 sm:pt-32 lg:pb-10 lg:pt-36">
           {/* Title + intro */}
-          <div className="grid gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-7">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/90 ring-1 ring-white/20 backdrop-blur-md animate-fade-up">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> Naxcuure Healthcare
-              </div>
-              <h1
-                key={language}
-                className="display text-[2.9rem] text-white sm:text-7xl lg:text-[5.6rem] xl:text-[6.4rem] text-balance animate-fade-up [animation-delay:120ms]"
-              >
-                {t.home.heroTitle}
-              </h1>
-              <p className="mt-6 max-w-md text-base font-light leading-relaxed text-white/80 sm:text-lg lg:hidden animate-fade-up [animation-delay:240ms]">
-                {t.home.heroSubtitle}
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3 animate-fade-up [animation-delay:320ms]">
-                <ArrowLink to="/Product" variant="light">{u.exploreProducts}</ArrowLink>
-                <Link
-                  to="/about"
-                  className="rounded-full px-6 py-3.5 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur-md transition hover:bg-white/10"
-                >
-                  {t.nav.about}
-                </Link>
-              </div>
+          <div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/90 ring-1 ring-white/20 backdrop-blur-md animate-fade-up">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> Naxcuure Healthcare
             </div>
-            <div className="hidden lg:col-span-4 lg:col-start-9 lg:flex lg:flex-col lg:justify-center">
-              <p className="text-lg font-light leading-relaxed text-white/85 animate-fade-up [animation-delay:300ms]">{t.home.heroSubtitle}</p>
-              {/* Slide counter */}
-              <div className="mt-10 flex items-center gap-4 text-xs font-semibold tracking-widest text-white/80">
-                <button onClick={() => go(-1)} aria-label={u.prev} className="transition hover:text-accent">
-                  <ArrowLeftIcon className="h-4 w-4" />
-                </button>
-                <span>{pad(current + 1)}</span>
-                <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-white/20">
-                  <div
-                    key={`${current}-${tick}`}
-                    className="absolute inset-0 origin-left bg-white animate-progress"
-                    style={{ animationDuration: `${SLIDE_MS}ms` }}
-                  />
+            <h1
+              key={language}
+              className="display max-w-5xl text-balance text-[2.05rem] text-white min-[400px]:text-[2.3rem] sm:text-6xl lg:text-[5rem] xl:text-[5.8rem] animate-fade-up [animation-delay:120ms]"
+            >
+              {t.home.heroTitle}
+            </h1>
+            <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-6">
+                <p className="mb-8 max-w-md text-base font-light leading-relaxed text-white/80 sm:text-lg lg:hidden animate-fade-up [animation-delay:240ms]">
+                  {t.home.heroSubtitle}
+                </p>
+                <div className="flex flex-wrap items-center gap-3 animate-fade-up [animation-delay:320ms]">
+                  <ArrowLink to="/Product" variant="light">{u.exploreProducts}</ArrowLink>
+                  <Link
+                    to="/about"
+                    className="rounded-full px-6 py-3.5 text-sm font-semibold text-white ring-1 ring-white/30 backdrop-blur-md transition hover:bg-white/10"
+                  >
+                    {t.nav.about}
+                  </Link>
                 </div>
-                <span className="text-white/50">{pad(SLIDES.length)}</span>
-                <button onClick={() => go(1)} aria-label={u.next} className="transition hover:text-accent">
-                  <ArrowRightIcon className="h-4 w-4" />
-                </button>
+              </div>
+              <div className="hidden lg:col-span-5 lg:col-start-8 lg:block">
+                <p className="border-l-2 border-accent pl-5 text-lg font-light leading-relaxed text-white/85 animate-fade-up [animation-delay:300ms]">{t.home.heroSubtitle}</p>
+                {/* Slide counter */}
+                <div className="mt-8 flex items-center gap-4 text-xs font-semibold tracking-widest text-white/80">
+                  <button onClick={() => go(-1)} aria-label={u.prev} className="transition hover:text-accent">
+                    <ArrowLeftIcon className="h-4 w-4" />
+                  </button>
+                  <span>{pad(current + 1)}</span>
+                  <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-white/20">
+                    <div
+                      key={`${current}-${tick}`}
+                      className="absolute inset-0 origin-left bg-white animate-progress"
+                      style={{ animationDuration: `${SLIDE_MS}ms` }}
+                    />
+                  </div>
+                  <span className="text-white/50">{pad(SLIDES.length)}</span>
+                  <button onClick={() => go(1)} aria-label={u.next} className="transition hover:text-accent">
+                    <ArrowRightIcon className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
