@@ -6,6 +6,5 @@ export interface SiteVideo {
 }
 
 export const videos: SiteVideo[] = [
-  { id: 'xbJPU51duSc', tag: 'fda' },
   { id: 'IojbhMQgykY', tag: 'marketing' },
 ];

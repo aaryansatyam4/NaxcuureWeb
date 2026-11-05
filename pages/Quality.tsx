@@ -4,10 +4,6 @@ import AnimatedSection from '../components/AnimatedSection';
 import PageHero from '../components/PageHero';
 import SectionHeading from '../components/SectionHeading';
 import { ShieldCheckIcon, AwardIcon, MicroscopeIcon } from '../components/icons';
-import VideoCard from '../components/VideoCard';
-import { videos } from '../data/videos';
-
-const fda = videos.find((v) => v.tag === 'fda')!;
 
 const Quality: React.FC = () => {
   const { t, u } = useLanguage();
@@ -61,17 +57,6 @@ const Quality: React.FC = () => {
             </AnimatedSection>
           </div>
         </div>
-      </section>
-
-      {/* FDA video */}
-      <section className="shell pt-16 sm:pt-24 lg:pt-32">
-        <AnimatedSection>
-          <div className="eyebrow mb-6">
-            <span className="eyebrow-dot" />
-            <span>{u.videos}</span> / <span className="text-ink">FDA</span>
-          </div>
-          <VideoCard id={fda.id} label="FDA" playLabel={u.playVideo} className="mx-auto max-w-5xl" />
-        </AnimatedSection>
       </section>
 
       {/* Quality promise */}

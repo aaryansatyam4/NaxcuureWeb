@@ -299,7 +299,7 @@ const Videos: React.FC = () => {
       <AnimatedSection>
         <SectionHeading index="03" label="Naxcuure" title={u.videos} />
       </AnimatedSection>
-      <div className="mt-10 grid gap-5 lg:mt-14 lg:grid-cols-2">
+      <div className={`mt-10 grid gap-5 lg:mt-14 ${videos.length > 1 ? 'lg:grid-cols-2' : ''}`}>
         {videos.map((v, i) => (
           <AnimatedSection key={v.id} delay={`${i * 120}ms`}>
             <VideoCard id={v.id} label={labelFor(v.tag)} playLabel={u.playVideo} />
