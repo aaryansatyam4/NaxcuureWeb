@@ -1,69 +1,64 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useParams } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import About from './pages/About';
-import Products from './pages/Products';
-import Quality from './pages/Quality';
-import Career from './pages/Career';
-import ProductDetail from './pages/ProductDetail';
-import Chatbot from './components/Chatbot';
+import ErrorBoundary from './components/ErrorBoundary';
+
+const About = lazy(() => import('./pages/About'));
+const Products = lazy(() => import('./pages/Products'));
+const ProductDetail = lazy(() => import('./pages/ProductDetail'));
+const Quality = lazy(() => import('./pages/Quality'));
+const Career = lazy(() => import('./pages/Career'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Chatbot = lazy(() => import('./components/Chatbot'));
 
 const ScrollToTop: React.FC = () => {
-  React.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+  }, [pathname]);
   return null;
-};
-
-const ProductsPage: React.FC = () => {
-  const navigate = useNavigate();
-  
-  const handleViewProduct = (productId: string) => {
-    navigate(`/Product/${productId}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  return <Products onViewProduct={handleViewProduct} />;
 };
 
 const ProductDetailPage: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
-  const navigate = useNavigate();
-
-  return (
-    <ProductDetail 
-      productId={productId || ''} 
-      onBack={() => navigate('/Product')} 
-    />
-  );
+  return <ProductDetail productId={productId || ''} />;
 };
 
-const App: React.FC = () => {
-  return (
-    <LanguageProvider>
-      <Router>
-        <div className="font-sans bg-white min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-grow">
+const PageFallback = () => <div className="min-h-screen" />;
+
+const App: React.FC = () => (
+  <LanguageProvider>
+    <Router>
+      <ScrollToTop />
+      <div className="flex min-h-screen flex-col bg-canvas font-sans">
+        <Header />
+        <main className="flex-grow">
+          <Suspense fallback={<PageFallback />}>
             <Routes>
-              <Route path="/" element={<><ScrollToTop /><Home /></>} />
-              <Route path="/about" element={<><ScrollToTop /><About /></>} />
-              <Route path="/Product" element={<><ScrollToTop /><ProductsPage /></>} />
-              <Route path="/Product/:productId" element={<><ScrollToTop /><ProductDetailPage /></>} />
-              <Route path="/quality" element={<><ScrollToTop /><Quality /></>} />
-              <Route path="/career" element={<><ScrollToTop /><Career /></>} />
-              <Route path="*" element={<><ScrollToTop /><Home /></>} />
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/Product" element={<Products />} />
+              <Route path="/Product/:productId" element={<ProductDetailPage />} />
+              <Route path="/quality" element={<Quality />} />
+              <Route path="/career" element={<Career />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<Home />} />
             </Routes>
-          </main>
-          <Footer />
-          <Chatbot />
-        </div>
-      </Router>
-    </LanguageProvider>
-  );
-};
+          </Suspense>
+        </main>
+        <Footer />
+        {/* The assistant is optional: if it fails to load or crashes, the rest of the site keeps working. */}
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={null}>
+            <Chatbot />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
+    </Router>
+  </LanguageProvider>
+);
 
 export default App;

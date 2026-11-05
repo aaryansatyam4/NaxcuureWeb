@@ -1,102 +1,72 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import AnimatedSection from '../components/AnimatedSection';
 import PageHero from '../components/PageHero';
+import ContactForm from '../components/ContactForm';
+import { MapPinIcon, PhoneIcon, MailIcon } from '../components/icons';
 
-const Contact = () => {
-  const { t } = useLanguage();
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+const Contact: React.FC = () => {
+  const { t, u } = useLanguage();
+  const [params] = useSearchParams();
+  const product = params.get('product') ?? '';
+  const c = t.contact;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(false);
-    setSubmitted(false);
-
-    const formData = new FormData(e.target);
-    try {
-      const response = await fetch("https://formspree.io/f/xblpnada", {
-        method: "POST",
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      if (response.ok) {
-        setSubmitted(true);
-        e.target.reset();
-      } else {
-        setError(true);
-      }
-    } catch (error) {
-      setError(true);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const items = [
+    { icon: MapPinIcon, label: u.address, value: c.address, href: 'https://www.google.com/maps/search/?api=1&query=Naxcuure+Healthcare+Pvt.+Ltd.' },
+    { icon: PhoneIcon, label: u.phone, value: c.phone, href: `tel:${c.phone.replace(/\s/g, '')}` },
+    { icon: MailIcon, label: u.email, value: c.email, href: `mailto:${c.email}` },
+  ];
 
   return (
-    <div className="bg-light-bg">
-      <PageHero 
-        title={t.contact.title}
-        subtitle={t.contact.p1}
-        backgroundImage="https://images.pexels.com/photos/4021779/pexels-photo-4021779.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-      />
-      <div className="py-24 md:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-12 md:gap-16 max-w-6xl mx-auto items-start">
-              <AnimatedSection>
-                <div className="space-y-8 text-lg font-sans">
-                  <div>
-                    <h3 className="text-2xl font-serif text-primary mb-2">Address</h3>
-                    <p className="text-gray-700 leading-relaxed">{t.contact.address}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif text-primary mb-2">Phone</h3>
-                    <p className="text-gray-700">{t.contact.phone}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-serif text-primary mb-2">Email</h3>
-                    <p className="text-gray-700">{t.contact.email}</p>
-                  </div>
-                </div>
-                <div className="mt-10 rounded-lg overflow-hidden shadow-lg h-72 bg-gray-200">
-                    <img src="https://images.pexels.com/photos/256369/pexels-photo-256369.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" className="w-full h-full object-cover" alt="Map"/>
-                </div>
-              </AnimatedSection>
+    <>
+      <PageHero title={c.title} subtitle={c.p1} backgroundImage="/images/factory-aerial.webp" crumb={u.contact} />
 
-              <AnimatedSection delay="200ms">
-                <div className="bg-white p-8 md:p-10 rounded-lg shadow-xl border border-gray-200/60 h-full">
-                  <h2 className="text-3xl font-serif text-primary mb-8">Send us a message</h2>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 font-sans mb-1">{t.contact.formName}</label>
-                      <input type="text" id="name" name="name" className="mt-1 block w-full px-4 py-3 bg-light-bg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm font-sans" required />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 font-sans mb-1">{t.contact.formEmail}</label>
-                      <input type="email" id="email" name="email" className="mt-1 block w-full px-4 py-3 bg-light-bg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm font-sans" required />
-                    </div>
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 font-sans mb-1">{t.contact.formMessage}</label>
-                      <textarea id="message" name="message" rows={5} className="mt-1 block w-full px-4 py-3 bg-light-bg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm font-sans" required></textarea>
-                    </div>
-                    <div>
-                      <button type="submit" disabled={submitting} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-300 font-sans disabled:opacity-50">
-                        {submitting ? 'Submitting...' : t.contact.formSubmit}
-                      </button>
-                    </div>
-                    {submitted && <p className="text-green-600">{t.contact.formSuccess}</p>}
-                    {error && <p className="text-red-600">{t.contact.formError}</p>}
-                  </form>
+      <section className="shell py-16 sm:py-24">
+        <div className="grid gap-5 md:grid-cols-3">
+          {items.map((it, i) => (
+            <AnimatedSection key={it.label} delay={`${i * 80}ms`}>
+              <a
+                href={it.href}
+                target={it.href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                className="group card flex h-full flex-col gap-6 p-7 transition-all duration-500 hover:-translate-y-1 hover:bg-primary sm:p-8"
+              >
+                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-accent text-white">
+                  <it.icon className="h-6 w-6" />
+                </span>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-ink/40 transition-colors group-hover:text-white/50">{it.label}</div>
+                  <p className="mt-2 font-medium leading-relaxed text-ink transition-colors group-hover:text-white">{it.value}</p>
                 </div>
-              </AnimatedSection>
-            </div>
+              </a>
+            </AnimatedSection>
+          ))}
         </div>
-      </div>
-    </div>
+
+        <div className="mt-5 grid gap-5 lg:grid-cols-12">
+          <AnimatedSection className="lg:col-span-7">
+            <div className="card h-full p-8 sm:p-12">
+              <h2 className="mb-8 text-2xl font-semibold uppercase tracking-tight text-ink sm:text-3xl">{u.sendMessage}</h2>
+              <ContactForm idPrefix="contact" product={product || undefined} defaultMessage={product ? `${u.enquireProduct}: ${product}\n\n` : ''} />
+            </div>
+          </AnimatedSection>
+          <AnimatedSection className="lg:col-span-5" delay="120ms">
+            <div className="h-full min-h-[380px] overflow-hidden rounded-4xl bg-primary-50 ring-1 ring-ink/5">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d885.3567747385462!2d72.4614479149002!3d23.320080999785503!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395c25a04ef22995%3A0x2c486bf920f7be43!2sNaxcuure%20Healthcare%20Pvt.%20Ltd.!5e0!3m2!1sen!2sin!4v1762334985724!5m2!1sen!2sin"
+                className="h-full min-h-[380px] w-full"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Naxcuure Location"
+              />
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+    </>
   );
 };
 

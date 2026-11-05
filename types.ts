@@ -97,7 +97,6 @@ export interface Content {
         composition: string;
         indications: string;
       };
-      productList: Product[];
     };
     quality: {
       title: string;

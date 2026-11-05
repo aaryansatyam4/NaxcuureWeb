@@ -1,9 +1,4 @@
 import { Content } from '../types';
-import { productListEn } from './products/en';
-import { Product } from '../types';
-import { productListEs } from './products/es';
-import { productListFr } from './products/fr';
-import { productListRu } from './products/ru';
 
 
 const jobsEn = [
@@ -125,7 +120,6 @@ export const content: Content = {
         composition: 'Composition',
         indications: 'Indications for Use',
       },
-      productList: productListEn,
     },
    quality: {
   title: 'Commitment to Unmatched Quality',
@@ -273,7 +267,6 @@ export const content: Content = {
                 composition: "Состав",
                 indications: "Показания к Применению"
             },
-            productList: productListRu
         },
         quality: {
             title: "Приверженность Непревзойденному Качеству",
@@ -419,7 +412,6 @@ fr: {
                 composition: "Composition",
                 indications: "Indications d'Utilisation"
             },
-            productList: productListFr
         },
         quality: {
             title: "Engagement envers une Qualité Inégalée",
@@ -566,7 +558,6 @@ fr: {
                 composition: "Composición",
                 indications: "Indicaciones de Uso"
             },
-            productList: productListEs
         },
         quality: {
             title: "Compromiso con la Calidad Inigualable",

@@ -1,8 +1,77 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import type { GoogleGenAI } from '@google/genai';
 import { useLanguage } from '../context/LanguageContext';
 import { ChatMessage, Content } from '../types';
-import { ChatBubbleIcon, CloseIcon, SendIcon, SpinnerIcon } from './icons';
+import { catalogue, categories, dosageForms } from '../data/catalogue';
+import { ChatBubbleIcon, CloseIcon, SendIcon } from './icons';
+
+const API_KEY = (process.env.API_KEY || process.env.GEMINI_API_KEY || '') as string;
+
+/** Builds the assistant's instructions + site content (answers must come only from this). */
+const generateContext = (content: Content['en']) => {
+  const home = `
+# Naxcuure Home Page Information
+- Main Slogan: ${content.home.heroTitle}: ${content.home.heroSubtitle}
+- Announcement: ${content.home.announcement.title} — ${content.home.announcement.text}
+- Commitment: ${content.home.section1Title}: ${content.home.section1Text} ${content.home.section1P2}
+- Presence: ${content.home.section2Title}: ${content.home.section2Text}
+- Future: ${content.home.section3Title}: ${content.home.section3Text}
+- Contact: ${content.home.contactSection.address} | ${content.home.contactSection.phone} | ${content.home.contactSection.email}
+  `;
+
+  const about = `
+# About Naxcuure
+- Description: ${content.about.p1} ${content.about.p2} ${content.about.p3}
+- Mission: ${content.about.missionTitle}: ${content.about.missionText}
+- Vision: ${content.about.visionTitle}: ${content.about.visionText}
+- Values: ${content.about.values.map((v) => `${v.title}: ${v.text}`).join('; ')}
+- Leadership: ${content.about.leadershipText1} ${content.about.leadershipText2}
+  `;
+
+  const products = `
+# Products
+- Intro: ${content.products.intro}
+- Product catalogue by therapeutic category (name — dosage form — strength):
+${categories
+  .map((c) => {
+    const items = catalogue
+      .filter((p) => p.category === c.id)
+      .map((p) => `  - ${p.name}${p.form ? ` — ${dosageForms[p.form].en}` : ''}${p.strength ? ` — ${p.strength}` : ''}`)
+      .join('\n');
+    return `## ${c.label.en}\n${items}`;
+  })
+  .join('\n')}
+  `;
+
+  const quality = `
+# Quality Commitment
+- ${content.quality.p1} ${content.quality.p2} ${content.quality.p3}
+- Promise: ${content.quality.commitmentText}
+- Systems: ${content.quality.section2Text}
+- ${content.quality.certificationsTitle}: ${content.quality.certificationsText}
+  `;
+
+  const career = `
+# Careers at Naxcuure
+- Why join: ${content.career.introText}
+- Benefits: ${content.career.benefits.join(', ')}
+- Openings:
+${content.career.jobs.map((j) => `  - Title: ${j.title}\n    Department: ${j.department}\n    Location: ${j.location}`).join('\n')}
+  `;
+
+  return `You are NaxBot — a helpful and concise AI assistant for Naxcuure (a pharmaceutical company).
+Follow these rules EXACTLY:
+
+1. ANSWER ONLY using the information provided below (do NOT fabricate facts).
+2. Be friendly, professional, and concise. Reply in the language the user writes in.
+3. If the user asks for medical advice, legal advice, competitor info, pricing, or anything outside of the provided information, respond that you can only provide information found on Naxcuure's website and recommend contacting the company or a qualified professional.
+4. Do NOT state how many products Naxcuure has. If the user asks about the catalogue, availability, pricing or ordering, answer from the product list where possible and invite them to get in touch via the Contact page on the website for details.
+
+Now, here is the site information you should use to answer queries:
+---
+${[home, about, products, quality, career].join('\n\n')}
+---`;
+};
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,127 +80,51 @@ const Chatbot: React.FC = () => {
   const [userInput, setUserInput] = useState('');
   const { t } = useLanguage();
   const chatContentRef = useRef<HTMLDivElement>(null);
+  const clientRef = useRef<GoogleGenAI | null>(null);
 
-  // instantiate Google GenAI client (ensure API key is set in env)
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
-
-  // initial greeting when chat opens (keeps it simple — product detail is NOT here)
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      setMessages([
-        {
-          role: 'model',
-          text: "Hello! I'm NaxBot, your virtual assistant for Naxcuure. How can I help you today?"
-        }
-      ]);
+      setMessages([{ role: 'model', text: "Hello! I'm NaxBot, your virtual assistant for Naxcuure. How can I help you today?" }]);
     }
-  }, [isOpen]);
+  }, [isOpen, messages.length]);
 
-  // auto-scroll to bottom when messages or loading state change
   useEffect(() => {
-    chatContentRef.current?.scrollTo(0, chatContentRef.current.scrollHeight);
+    chatContentRef.current?.scrollTo({ top: chatContentRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  /**
-   * generateContext
-   * Builds the system instruction + site content that will be provided to the model.
-   *
-   * NOTE:
-   * - We explicitly instruct the model to mention "Naxcuure has over 200 products" and
-   *   to refer users to the Contact page WHEN the user asks about product counts, catalogs,
-   *   pricing, availability, ordering, or similar product-specific queries.
-   * - We DO NOT put that marketing line into the initial greeting; it will be used only when relevant.
-   */
-  const generateContext = (content: Content['en']) => {
-    const home = `
-# Naxcuure Home Page Information
-- Main Slogan: ${content.home.heroTitle}: ${content.home.heroSubtitle}
-- Announcement: ${content.home.announcement.title} — ${content.home.announcement.text}
-- Commitment: ${content.home.section1Title}: ${content.home.section1Text} ${content.home.section1P2}
-- Presence: ${content.home.section2Title}: ${content.home.section2Text}
-- Future: ${content.home.section3Title}: ${content.home.section3Text}
-    `;
+  // Without an API key there is nothing to talk to — don't render the widget at all.
+  if (!API_KEY) return null;
 
-    const about = `
-# About Naxcuure
-- Description: ${content.about.p1} ${content.about.p2} ${content.about.p3}
-- Mission: ${content.about.missionTitle}: ${content.about.missionText}
-- Vision: ${content.about.visionTitle}: ${content.about.visionText}
-- Values: ${content.about.values.map(v => `${v.title}: ${v.text}`).join('; ')}
-    `;
-
-    const products = `
-# Products
-- Intro: ${content.products.intro}
-- Product List:
-${content.products.productList.map(p => `  - Name: ${p.productName}\n    Use: ${p.indicationsForUse}\n    Composition: ${p.composition}`).join('\n')}
-    `;
-
-    const quality = `
-# Quality Commitment
-- ${content.quality.p1} ${content.quality.p2} ${content.quality.p3}
-- Promise: ${content.quality.commitmentText}
-- Systems: ${content.quality.section2Text}
-    `;
-
-    const career = `
-# Careers at Naxcuure
-- Why join: ${content.career.introText}
-- Benefits: ${content.career.benefits.join(', ')}
-- Openings:
-${content.career.jobs.map(j => `  - Title: ${j.title}\n    Department: ${j.department}\n    Location: ${j.location}`).join('\n')}
-    `;
-
-    // System instruction with clear guidance for product-related queries
-    return `You are NaxBot — a helpful and concise AI assistant for Naxcuure (a pharmaceutical company).
-Follow these rules EXACTLY:
-
-1. ANSWER ONLY using the information provided below (do NOT fabricate facts).
-2. Be friendly, professional, and concise.
-3. If the user asks for medical advice, legal advice, competitor info, pricing, or anything outside of the provided information, respond that you can only provide information found on Naxcuure's website and recommend contacting the company or a qualified professional.
-4. **Special product guidance** (use this only when relevant):
-   - If the user asks about the number of products, product catalog, product range, availability, ordering, or asks "how many products do you have" / "do you have X product" / "can I get the catalog", then include this information in your reply:
-     "Naxcuure manufactures and supplies over 400 high-quality pharmaceutical products across multiple therapeutic categories. For detailed product specifications, pricing, availability, or to request the full catalog, please contact us via the Contact page on our website."
-   - Do NOT include the above sentence unless the user's question is specifically about product counts, catalog, availability, ordering, or closely related topics.
-
-Now, here is the site information you should use to answer queries:
----
-${[home, about, products, quality, career].join('\n\n')}
----`;
+  const getClient = async () => {
+    if (!clientRef.current) {
+      const { GoogleGenAI } = await import('@google/genai');
+      clientRef.current = new GoogleGenAI({ apiKey: API_KEY });
+    }
+    return clientRef.current;
   };
 
-  // handle sending a user message
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userInput.trim() || isLoading) return;
 
     const userMessage: ChatMessage = { role: 'user', text: userInput.trim() };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setUserInput('');
     setIsLoading(true);
 
     try {
-      const systemInstruction = generateContext(t);
-      // prepare history — convert to the simple shape expected by your usage
-      const history = [...messages, userMessage].map(msg => ({
-        role: msg.role,
-        parts: [{ text: msg.text }]
-      }));
-
+      const ai = await getClient();
+      const history = [...messages, userMessage].map((msg) => ({ role: msg.role, parts: [{ text: msg.text }] }));
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-lite',
         contents: history,
-        config: { systemInstruction },
+        config: { systemInstruction: generateContext(t) },
       });
-
-      // handle model response — keep safe fallback if shape differs
-      const modelText = (response && (response.text ?? (response.outputText ?? ''))) as string;
-      const modelMessage: ChatMessage = { role: 'model', text: modelText || 'Sorry, I could not generate a response.' };
-      setMessages(prev => [...prev, modelMessage]);
+      const modelText = response?.text ?? '';
+      setMessages((prev) => [...prev, { role: 'model', text: modelText || 'Sorry, I could not generate a response.' }]);
     } catch (error) {
       console.error('Gemini API error:', error);
-      const errorMessage: ChatMessage = { role: 'model', text: 'Sorry, I encountered an error. Please try again.' };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, { role: 'model', text: 'Sorry, I encountered an error. Please try again.' }]);
     } finally {
       setIsLoading(false);
     }
@@ -139,69 +132,84 @@ ${[home, about, products, quality, career].join('\n\n')}
 
   return (
     <>
-      {/* collapsed chat button */}
-      <div className={`fixed bottom-0 right-0 m-6 z-50 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}>
+      {/* Launcher */}
+      <div className={`fixed bottom-5 right-5 z-40 transition-all duration-300 sm:bottom-7 sm:right-7 ${isOpen ? 'pointer-events-none scale-90 opacity-0' : 'scale-100 opacity-100'}`}>
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-primary hover:bg-accent text-white rounded-full p-4 shadow-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-          aria-label="Open Chat"
+          className="group flex items-center gap-3 rounded-full bg-ink p-2 pr-2 text-white shadow-[0_20px_40px_-12px_rgba(15,14,36,0.5)] transition-all hover:bg-primary sm:pr-5"
+          aria-label="Open chat"
         >
-          <ChatBubbleIcon className="w-8 h-8" />
+          <span className="relative grid h-11 w-11 place-items-center rounded-full bg-accent">
+            <ChatBubbleIcon className="h-5 w-5" />
+            <span className="absolute right-0 top-0 h-3 w-3 rounded-full border-2 border-ink bg-emerald-400" />
+          </span>
+          <span className="hidden text-sm font-semibold sm:inline">NaxBot</span>
         </button>
       </div>
 
-      {/* open chat panel */}
-      <div className={`fixed bottom-0 right-0 w-full h-full sm:bottom-6 sm:right-6 sm:w-[400px] sm:h-[580px] sm:max-h-[calc(100dvh-3rem)] z-50 bg-white sm:rounded-xl shadow-2xl flex flex-col transition-all duration-300 ease-in-out origin-bottom-right ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 bg-primary text-white sm:rounded-t-xl">
-          <div className="flex items-center space-x-3">
-            <ChatBubbleIcon className="w-6 h-6" />
-            <h3 className="text-lg font-serif font-semibold">NaxBot Assistant</h3>
+      {/* Panel */}
+      <div
+        className={`fixed inset-0 z-50 flex flex-col overflow-hidden bg-white shadow-2xl transition-all duration-300 origin-bottom-right sm:inset-auto sm:bottom-7 sm:right-7 sm:h-[600px] sm:max-h-[calc(100dvh-3.5rem)] sm:w-[400px] sm:rounded-4xl sm:ring-1 sm:ring-ink/10 ${
+          isOpen ? 'scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
+        }`}
+        role="dialog"
+        aria-label="NaxBot Assistant"
+      >
+        <div className="relative isolate flex items-center justify-between overflow-hidden bg-gradient-to-br from-primary to-ink px-5 py-4 text-white">
+          <div className="absolute -right-10 -top-10 -z-10 h-32 w-32 rounded-full bg-accent/40 blur-2xl" />
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10"><ChatBubbleIcon className="h-5 w-5" /></span>
+            <div>
+              <h3 className="text-base font-semibold">NaxBot Assistant</h3>
+              <p className="flex items-center gap-1.5 text-xs text-white/60"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Naxcuure Healthcare</p>
+            </div>
           </div>
-          <button onClick={() => setIsOpen(false)} className="p-1 rounded-full hover:bg-white/20 transition-colors" aria-label="Close Chat">
-            <CloseIcon className="w-6 h-6" />
+          <button onClick={() => setIsOpen(false)} className="grid h-9 w-9 place-items-center rounded-full transition-colors hover:bg-white/15" aria-label="Close chat">
+            <CloseIcon className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Chat Content */}
-        <div ref={chatContentRef} className="flex-1 p-4 overflow-y-auto bg-light-bg space-y-4">
+        <div ref={chatContentRef} className="flex-1 space-y-3 overflow-y-auto bg-canvas p-4">
           {messages.map((message, index) => (
             <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[80%] p-3 rounded-2xl font-sans text-sm ${message.role === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
-                {/* render message text */}
+              <div
+                className={`max-w-[82%] whitespace-pre-line rounded-3xl px-4 py-3 text-sm leading-relaxed ${
+                  message.role === 'user' ? 'rounded-br-md bg-primary text-white' : 'rounded-bl-md bg-white text-ink ring-1 ring-ink/5'
+                }`}
+              >
                 {message.text}
               </div>
             </div>
           ))}
-
           {isLoading && (
             <div className="flex justify-start">
-              <div className="max-w-[80%] p-3 rounded-2xl font-sans text-sm bg-gray-200 text-gray-800 rounded-bl-none flex items-center space-x-2">
-                <SpinnerIcon className="w-4 h-4 text-primary" />
-                <span>Thinking...</span>
+              <div className="flex items-center gap-1.5 rounded-3xl rounded-bl-md bg-white px-4 py-4 ring-1 ring-ink/5">
+                {[0, 150, 300].map((d) => (
+                  <span key={d} className="h-2 w-2 animate-bounce rounded-full bg-primary/50" style={{ animationDelay: `${d}ms` }} />
+                ))}
               </div>
             </div>
           )}
         </div>
 
-        {/* Input */}
-        <div className="p-4 border-t border-gray-200 bg-white sm:rounded-b-xl">
-          <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
+        <div className="border-t border-ink/5 bg-white p-3">
+          <form onSubmit={handleSendMessage} className="flex items-center gap-2 rounded-full bg-canvas p-1.5 ring-1 ring-ink/10 focus-within:ring-2 focus-within:ring-primary">
             <input
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="Ask about Naxcuure..."
-              className="flex-1 px-4 py-2 bg-light-bg border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+              className="flex-1 bg-transparent px-3 text-sm text-ink placeholder:text-ink/40 focus:outline-none"
               disabled={isLoading}
+              aria-label="Message"
             />
             <button
               type="submit"
               disabled={isLoading || !userInput.trim()}
-              className="bg-primary text-white rounded-full p-3 hover:bg-accent transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
-              aria-label="Send Message"
+              className="grid h-10 w-10 place-items-center rounded-full bg-accent text-white transition-colors hover:bg-primary disabled:bg-ink/20"
+              aria-label="Send message"
             >
-              <SendIcon className="w-5 h-5" />
+              <SendIcon className="h-4 w-4" />
             </button>
           </form>
         </div>

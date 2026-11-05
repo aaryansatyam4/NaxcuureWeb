@@ -1,31 +1,32 @@
+import { useEffect, useRef, useState } from 'react';
 
-import React, { useEffect, useState, useRef } from 'react';
-
-export const useIntersectionObserver = <T extends HTMLElement,>(options: IntersectionObserverInit) => {
+/** Reports once when the element first scrolls into view. */
+export const useIntersectionObserver = <T extends HTMLElement>({
+  threshold = 0.12,
+  rootMargin = '0px 0px -8% 0px',
+}: { threshold?: number; rootMargin?: string } = {}) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const elementRef = useRef<T | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsIntersecting(true);
-        if (elementRef.current) {
-          observer.unobserve(elementRef.current);
-        }
-      }
-    }, options);
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
+    const el = elementRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsIntersecting(true);
+      return;
     }
-
-    return () => {
-      if (elementRef.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        observer.unobserve(elementRef.current);
-      }
-    };
-  }, [options]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsIntersecting(true);
+          observer.disconnect();
+        }
+      },
+      { threshold, rootMargin },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold, rootMargin]);
 
   return { elementRef, isIntersecting };
 };
