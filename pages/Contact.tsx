@@ -20,7 +20,7 @@ const Contact: React.FC = () => {
 
   return (
     <>
-      <PageHero title={c.title} subtitle={c.p1} backgroundImage="/images/factory-aerial.webp" crumb={u.contact} />
+      <PageHero title={c.title} subtitle={c.p1} backgroundImage="/images/factory-aerial.webp" crumb={u.contact} imageRatio={16 / 9} />
 
       <section className="shell py-16 sm:py-24">
         <div className="grid gap-5 md:grid-cols-3">

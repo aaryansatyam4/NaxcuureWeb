@@ -11,14 +11,14 @@ const Quality: React.FC = () => {
 
   return (
     <>
-      <PageHero title={q.title} subtitle={u.qualityHeroSubtitle} backgroundImage="/images/lab-qc.webp" crumb={t.nav.quality} />
+      <PageHero title={q.title} subtitle={u.qualityHeroSubtitle} backgroundImage="/images/lab-qc.webp" crumb={t.nav.quality} imageRatio={16 / 9} />
 
       {/* Stringent standards */}
       <section className="shell py-16 sm:py-24 lg:py-32">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <AnimatedSection className="order-2 lg:order-1 lg:col-span-6">
             <div className="relative">
-              <div className="h-[420px] overflow-hidden rounded-4xl sm:h-[560px]">
+              <div className="aspect-video overflow-hidden rounded-4xl lg:aspect-auto lg:h-[560px]">
                 <img src="/images/lab-research.webp" alt="Quality control laboratory" className="h-full w-full object-cover" loading="lazy" />
               </div>
               <div className="absolute -bottom-6 left-6 flex items-center gap-4 rounded-3xl bg-white p-4 pr-6 shadow-2xl sm:left-10 animate-float">
