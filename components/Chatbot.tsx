@@ -7,6 +7,31 @@ import { ChatBubbleIcon, CloseIcon, SendIcon } from './icons';
 
 const API_KEY = (process.env.API_KEY || process.env.GEMINI_API_KEY || '') as string;
 
+// Tried in order; the next one is used only if a model has been retired (HTTP 404).
+const MODELS = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-flash-latest'];
+
+const errorStatus = (err: unknown): number | undefined => {
+  const e = err as { status?: unknown; code?: unknown; message?: unknown };
+  if (typeof e?.status === 'number') return e.status;
+  if (typeof e?.code === 'number') return e.code;
+  const m = typeof e?.message === 'string' ? e.message.match(/\b(400|401|403|404|429|500|503)\b/) : null;
+  return m ? Number(m[1]) : undefined;
+};
+
+/** Visitor-friendly message that still tells the site owner what went wrong (the code in brackets). */
+const describeError = (err: unknown): string => {
+  const status = errorStatus(err);
+  const msg = String((err as { message?: unknown })?.message ?? '');
+  if (/API key not valid|API_KEY_INVALID/i.test(msg)) return 'Sorry, the assistant is not configured correctly right now. (invalid API key)';
+  if (status === 429) return 'NaxBot is getting a lot of questions right now. Please try again in a minute. (429)';
+  if (status === 403) return 'Sorry, the assistant is temporarily unavailable. (403 — API key blocked or restricted)';
+  if (status === 404) return 'Sorry, the assistant is temporarily unavailable. (404 — model not found)';
+  if (status === 400) return 'Sorry, the assistant is temporarily unavailable. (400 — request rejected)';
+  if (status && status >= 500) return 'The assistant service is having trouble. Please try again shortly. (' + status + ')';
+  if (/Failed to fetch|NetworkError|network/i.test(msg)) return 'Could not reach the assistant. Please check your connection and try again.';
+  return 'Sorry, I encountered an error. Please try again.' + (status ? ' (' + status + ')' : '');
+};
+
 /** Builds the assistant's instructions + site content (answers must come only from this). */
 const generateContext = (content: Content['en']) => {
   const home = `
@@ -114,17 +139,31 @@ const Chatbot: React.FC = () => {
 
     try {
       const ai = await getClient();
-      const history = [...messages, userMessage].map((msg) => ({ role: msg.role, parts: [{ text: msg.text }] }));
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
-        contents: history,
-        config: { systemInstruction: generateContext(t) },
-      });
-      const modelText = response?.text ?? '';
+      // Send only the real conversation: start at the visitor's first message (the greeting is UI-only).
+      const convo = [...messages, userMessage];
+      const firstUser = convo.findIndex((m) => m.role === 'user');
+      const history = convo.slice(firstUser).map((msg) => ({ role: msg.role, parts: [{ text: msg.text }] }));
+      const systemInstruction = generateContext(t);
+
+      let response: Awaited<ReturnType<typeof ai.models.generateContent>> | undefined;
+      let lastError: unknown;
+      for (const model of MODELS) {
+        try {
+          response = await ai.models.generateContent({ model, contents: history, config: { systemInstruction } });
+          break;
+        } catch (err) {
+          lastError = err;
+          // Only try the next model if this one doesn't exist (e.g. retired); any other error is final.
+          if (errorStatus(err) !== 404) throw err;
+        }
+      }
+      if (!response) throw lastError;
+
+      const modelText = response.text ?? '';
       setMessages((prev) => [...prev, { role: 'model', text: modelText || 'Sorry, I could not generate a response.' }]);
     } catch (error) {
       console.error('Gemini API error:', error);
-      setMessages((prev) => [...prev, { role: 'model', text: 'Sorry, I encountered an error. Please try again.' }]);
+      setMessages((prev) => [...prev, { role: 'model', text: describeError(error) }]);
     } finally {
       setIsLoading(false);
     }
