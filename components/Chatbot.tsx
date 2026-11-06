@@ -1,101 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { GoogleGenAI } from '@google/genai';
 import { useLanguage } from '../context/LanguageContext';
-import { ChatMessage, Content } from '../types';
-import { catalogue, categories, dosageForms } from '../data/catalogue';
+import { ChatMessage } from '../types';
 import { ChatBubbleIcon, CloseIcon, SendIcon } from './icons';
 
-const API_KEY = (process.env.API_KEY || process.env.GEMINI_API_KEY || '') as string;
-
-// Tried in order; the next one is used only if a model has been retired (HTTP 404).
-const MODELS = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-flash-latest'];
-
-const errorStatus = (err: unknown): number | undefined => {
-  const e = err as { status?: unknown; code?: unknown; message?: unknown };
-  if (typeof e?.status === 'number') return e.status;
-  if (typeof e?.code === 'number') return e.code;
-  const m = typeof e?.message === 'string' ? e.message.match(/\b(400|401|403|404|429|500|503)\b/) : null;
-  return m ? Number(m[1]) : undefined;
-};
+/** Error carrying the HTTP status and reason returned by /api/chat. */
+class ChatError extends Error {
+  constructor(public status: number, public reason: string) {
+    super(`${status} ${reason}`);
+  }
+}
 
 /** Visitor-friendly message that still tells the site owner what went wrong (the code in brackets). */
 const describeError = (err: unknown): string => {
-  const status = errorStatus(err);
-  const msg = String((err as { message?: unknown })?.message ?? '');
-  if (/API key not valid|API_KEY_INVALID/i.test(msg)) return 'Sorry, the assistant is not configured correctly right now. (invalid API key)';
+  if (!(err instanceof ChatError)) return 'Could not reach the assistant. Please check your connection and try again.';
+  const { status, reason } = err;
+  if (reason === 'NOT_CONFIGURED') return 'Sorry, the assistant is not set up yet. (no API key on the server)';
+  if (reason === 'API_KEY_INVALID') return 'Sorry, the assistant is not configured correctly right now. (invalid API key)';
+  if (reason === 'CONSUMER_SUSPENDED') return 'Sorry, the assistant is temporarily unavailable. (403 — Google project suspended)';
   if (status === 429) return 'NaxBot is getting a lot of questions right now. Please try again in a minute. (429)';
-  if (status === 403) return 'Sorry, the assistant is temporarily unavailable. (403 — API key blocked or restricted)';
-  if (status === 404) return 'Sorry, the assistant is temporarily unavailable. (404 — model not found)';
-  if (status === 400) return 'Sorry, the assistant is temporarily unavailable. (400 — request rejected)';
-  if (status && status >= 500) return 'The assistant service is having trouble. Please try again shortly. (' + status + ')';
-  if (/Failed to fetch|NetworkError|network/i.test(msg)) return 'Could not reach the assistant. Please check your connection and try again.';
-  return 'Sorry, I encountered an error. Please try again.' + (status ? ' (' + status + ')' : '');
-};
-
-/** Builds the assistant's instructions + site content (answers must come only from this). */
-const generateContext = (content: Content['en']) => {
-  const home = `
-# Naxcuure Home Page Information
-- Main Slogan: ${content.home.heroTitle}: ${content.home.heroSubtitle}
-- Announcement: ${content.home.announcement.title} — ${content.home.announcement.text}
-- Commitment: ${content.home.section1Title}: ${content.home.section1Text} ${content.home.section1P2}
-- Presence: ${content.home.section2Title}: ${content.home.section2Text}
-- Future: ${content.home.section3Title}: ${content.home.section3Text}
-- Contact: ${content.home.contactSection.address} | ${content.home.contactSection.phone} | ${content.home.contactSection.email}
-  `;
-
-  const about = `
-# About Naxcuure
-- Description: ${content.about.p1} ${content.about.p2} ${content.about.p3}
-- Mission: ${content.about.missionTitle}: ${content.about.missionText}
-- Vision: ${content.about.visionTitle}: ${content.about.visionText}
-- Values: ${content.about.values.map((v) => `${v.title}: ${v.text}`).join('; ')}
-- Leadership: ${content.about.leadershipText1} ${content.about.leadershipText2}
-  `;
-
-  const products = `
-# Products
-- Intro: ${content.products.intro}
-- Product catalogue by therapeutic category (name — dosage form — strength):
-${categories
-  .map((c) => {
-    const items = catalogue
-      .filter((p) => p.category === c.id)
-      .map((p) => `  - ${p.name}${p.form ? ` — ${dosageForms[p.form].en}` : ''}${p.strength ? ` — ${p.strength}` : ''}`)
-      .join('\n');
-    return `## ${c.label.en}\n${items}`;
-  })
-  .join('\n')}
-  `;
-
-  const quality = `
-# Quality Commitment
-- ${content.quality.p1} ${content.quality.p2} ${content.quality.p3}
-- Promise: ${content.quality.commitmentText}
-- Systems: ${content.quality.section2Text}
-- ${content.quality.certificationsTitle}: ${content.quality.certificationsText}
-  `;
-
-  const career = `
-# Careers at Naxcuure
-- Why join: ${content.career.introText}
-- Benefits: ${content.career.benefits.join(', ')}
-- Openings:
-${content.career.jobs.map((j) => `  - Title: ${j.title}\n    Department: ${j.department}\n    Location: ${j.location}`).join('\n')}
-  `;
-
-  return `You are NaxBot — a helpful and concise AI assistant for Naxcuure (a pharmaceutical company).
-Follow these rules EXACTLY:
-
-1. ANSWER ONLY using the information provided below (do NOT fabricate facts).
-2. Be friendly, professional, and concise. Reply in the language the user writes in.
-3. If the user asks for medical advice, legal advice, competitor info, pricing, or anything outside of the provided information, respond that you can only provide information found on Naxcuure's website and recommend contacting the company or a qualified professional.
-4. Do NOT state how many products Naxcuure has. If the user asks about the catalogue, availability, pricing or ordering, answer from the product list where possible and invite them to get in touch via the Contact page on the website for details.
-
-Now, here is the site information you should use to answer queries:
----
-${[home, about, products, quality, career].join('\n\n')}
----`;
+  if (status === 403) return `Sorry, the assistant is temporarily unavailable. (403 — ${reason})`;
+  if (reason === 'MODEL_NOT_FOUND') return 'Sorry, the assistant is temporarily unavailable. (404 — model not found)';
+  if (status >= 500) return `The assistant service is having trouble. Please try again shortly. (${status})`;
+  return `Sorry, I encountered an error. Please try again. (${status} ${reason})`;
 };
 
 const Chatbot: React.FC = () => {
@@ -103,9 +29,8 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [userInput, setUserInput] = useState('');
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   const chatContentRef = useRef<HTMLDivElement>(null);
-  const clientRef = useRef<GoogleGenAI | null>(null);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -117,17 +42,6 @@ const Chatbot: React.FC = () => {
     chatContentRef.current?.scrollTo({ top: chatContentRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Without an API key there is nothing to talk to — don't render the widget at all.
-  if (!API_KEY) return null;
-
-  const getClient = async () => {
-    if (!clientRef.current) {
-      const { GoogleGenAI } = await import('@google/genai');
-      clientRef.current = new GoogleGenAI({ apiKey: API_KEY });
-    }
-    return clientRef.current;
-  };
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userInput.trim() || isLoading) return;
@@ -138,29 +52,14 @@ const Chatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const ai = await getClient();
-      // Send only the real conversation: start at the visitor's first message (the greeting is UI-only).
-      const convo = [...messages, userMessage];
-      const firstUser = convo.findIndex((m) => m.role === 'user');
-      const history = convo.slice(firstUser).map((msg) => ({ role: msg.role, parts: [{ text: msg.text }] }));
-      const systemInstruction = generateContext(t);
-
-      let response: Awaited<ReturnType<typeof ai.models.generateContent>> | undefined;
-      let lastError: unknown;
-      for (const model of MODELS) {
-        try {
-          response = await ai.models.generateContent({ model, contents: history, config: { systemInstruction } });
-          break;
-        } catch (err) {
-          lastError = err;
-          // Only try the next model if this one doesn't exist (e.g. retired); any other error is final.
-          if (errorStatus(err) !== 404) throw err;
-        }
-      }
-      if (!response) throw lastError;
-
-      const modelText = response.text ?? '';
-      setMessages((prev) => [...prev, { role: 'model', text: modelText || 'Sorry, I could not generate a response.' }]);
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: [...messages, userMessage], language }),
+      });
+      const data = (await res.json().catch(() => null)) as { text?: string; reason?: string } | null;
+      if (!res.ok || !data) throw new ChatError(res.status, data?.reason ?? 'UNREACHABLE');
+      setMessages((prev) => [...prev, { role: 'model', text: data.text || 'Sorry, I could not generate a response.' }]);
     } catch (error) {
       console.error('Gemini API error:', error);
       setMessages((prev) => [...prev, { role: 'model', text: describeError(error) }]);
