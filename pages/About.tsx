@@ -4,6 +4,7 @@ import AnimatedSection from '../components/AnimatedSection';
 import PageHero from '../components/PageHero';
 import SectionHeading from '../components/SectionHeading';
 import { ShieldCheckIcon, LightBulbIcon, UsersIcon, HeartIcon, SparkleIcon, TrendingUpIcon } from '../components/icons';
+import { photo } from '../lib/img';
 
 const VALUE_ICONS = [ShieldCheckIcon, LightBulbIcon, UsersIcon, HeartIcon];
 
@@ -31,7 +32,7 @@ const About: React.FC = () => {
             {/* Both photos keep their natural 3:2 shape and never overlap, so the building and signage stay fully visible */}
             <div className="grid gap-4">
               <div className="aspect-[3/2] overflow-hidden rounded-4xl">
-                <img src="/images/factory-front.webp" alt="Naxcuure facility" className="h-full w-full object-cover" loading="lazy" />
+                <img {...photo('/images/factory-front.webp', '(min-width: 1024px) 50vw, 100vw')} alt="Naxcuure facility" className="h-full w-full object-cover" loading="lazy" />
               </div>
               <div className="flex gap-4">
                 <div className="grain relative isolate grid flex-1 place-items-center overflow-hidden rounded-3xl bg-gradient-to-br from-accent to-[#C95C08] text-white">
@@ -39,7 +40,7 @@ const About: React.FC = () => {
                   <SparkleIcon className="h-10 w-10 animate-float sm:h-12 sm:w-12" />
                 </div>
                 <div className="aspect-[3/2] w-[62%] overflow-hidden rounded-3xl">
-                  <img src="/images/factory-wing.webp" alt="" className="h-full w-full object-cover" loading="lazy" />
+                  <img {...photo('/images/factory-wing.webp', '(min-width: 1024px) 31vw, 62vw')} alt="" className="h-full w-full object-cover" loading="lazy" />
                 </div>
               </div>
             </div>
@@ -52,7 +53,7 @@ const About: React.FC = () => {
         <AnimatedSection>
           {/* Phones: whole team photo, text below. Large screens: photo fills the panel with text over it. */}
           <div className="relative isolate overflow-hidden rounded-4xl bg-ink lg:flex lg:aspect-[16/9] lg:max-h-[860px] lg:w-full lg:items-end lg:rounded-5xl">
-            <img src="/images/team-cphi.webp" alt="The Naxcuure team" className="aspect-[3/2] w-full object-cover lg:absolute lg:inset-0 lg:-z-10 lg:aspect-auto lg:h-full" style={{ objectPosition: 'center 30%' }} loading="lazy" />
+            <img {...photo('/images/team-cphi.webp')} alt="The Naxcuure team" className="aspect-[3/2] w-full object-cover lg:absolute lg:inset-0 lg:-z-10 lg:aspect-auto lg:h-full" style={{ objectPosition: 'center 30%' }} loading="lazy" />
             <div className="absolute inset-0 -z-10 hidden bg-gradient-to-t from-ink via-ink/50 to-ink/0 lg:block" />
             <div className="shell grid gap-6 py-10 sm:py-12 lg:grid-cols-12 lg:items-end lg:gap-8 lg:pb-16 lg:pt-0">
               <div className="lg:col-span-6">
@@ -124,7 +125,7 @@ const About: React.FC = () => {
             <div className="relative">
               <div className="absolute -inset-1.5 sm:-inset-3 -z-10 rotate-[-2deg] sm:rotate-[-3deg] rounded-[2.5rem] bg-gradient-to-br from-accent to-primary opacity-90" />
               <div className="aspect-[2/3] overflow-hidden rounded-4xl bg-primary-50">
-                <img src="/images/directors.webp" alt="Directors of Naxcuure Healthcare" className="h-full w-full object-cover object-top" loading="lazy" />
+                <img {...photo('/images/directors.webp', '(min-width: 1024px) 42vw, 100vw')} alt="Directors of Naxcuure Healthcare" className="h-full w-full object-cover object-top" loading="lazy" />
               </div>
             </div>
           </AnimatedSection>

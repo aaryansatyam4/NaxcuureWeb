@@ -4,6 +4,7 @@ import AnimatedSection from '../components/AnimatedSection';
 import PageHero from '../components/PageHero';
 import SectionHeading from '../components/SectionHeading';
 import { TrendingUpIcon, HeartIcon, BookIcon, UsersIcon, AwardIcon, SparkleIcon, BriefcaseIcon, MapPinIcon, ArrowUpRightIcon } from '../components/icons';
+import { photo } from '../lib/img';
 
 const BENEFIT_ICONS = [TrendingUpIcon, HeartIcon, BookIcon, UsersIcon, AwardIcon, SparkleIcon];
 
@@ -32,7 +33,7 @@ const Career: React.FC = () => {
         <div className="grid gap-5 lg:grid-cols-12">
           <AnimatedSection className="lg:col-span-5">
             <div className="relative isolate flex h-full min-h-[420px] flex-col justify-end overflow-hidden rounded-4xl p-8 sm:p-10">
-              <img src="/images/career-team.webp" alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" loading="lazy" />
+              <img {...photo('/images/career-team.webp', '(min-width: 1024px) 42vw, 100vw')} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 -z-10 bg-gradient-to-t from-primary-900/95 via-primary-900/30 to-transparent" />
               <h2 className="display text-4xl text-white sm:text-5xl">{c.benefitsTitle}</h2>
             </div>

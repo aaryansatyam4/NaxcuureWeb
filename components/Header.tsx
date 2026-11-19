@@ -121,12 +121,12 @@ const Header: React.FC = () => {
           >
             <Link to="/" aria-label="Naxcuure — Home" className="relative flex h-9 w-[150px] shrink-0 items-center sm:h-10 sm:w-[190px]">
               <img
-                src="/images/logo-white.png"
+                src="/images/logo-white.webp"
                 alt="Naxcuure Healthcare"
                 className={`absolute inset-0 h-full w-full object-contain object-left transition-opacity duration-300 ${solid ? 'opacity-0' : 'opacity-100'}`}
               />
               <img
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt=""
                 aria-hidden="true"
                 className={`absolute inset-0 h-full w-full object-contain object-left transition-opacity duration-300 ${solid ? 'opacity-100' : 'opacity-0'}`}

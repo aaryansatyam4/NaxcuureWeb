@@ -11,6 +11,7 @@ import VideoCard from '../components/VideoCard';
 import { videos } from '../data/videos';
 import { categories } from '../data/categories';
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon, MegaphoneIcon, MapPinIcon, PhoneIcon, MailIcon } from '../components/icons';
+import { photo } from '../lib/img';
 
 const SLIDES = [
   { src: '/images/factory-aerial.webp', position: 'center' },
@@ -18,6 +19,9 @@ const SLIDES = [
   { src: '/images/team-cphi.webp', position: 'center 40%' },
   { src: '/images/lab-qc.webp', position: 'center' },
 ];
+// The hero slides are always downloaded, so other spots on this page that show the same photos use the
+// same sizes and reuse the copy the browser already has instead of fetching a second, smaller one.
+const HERO_SIZES = '100vw';
 const SLIDE_MS = 7000;
 const HERO_CATEGORIES = ['anti-infective', 'pain-inflammation', 'anti-hypertensive', 'gastrointestinal', 'allergy-respiratory', 'neurology'];
 
@@ -55,7 +59,7 @@ const Hero: React.FC = () => {
             aria-hidden={i !== current}
           >
             <img
-              src={s.src}
+              {...photo(s.src, HERO_SIZES)}
               alt=""
               className={`h-full w-full object-cover ${i === current ? 'animate-kenburns' : ''}`}
               style={{ objectPosition: s.position }}
@@ -124,7 +128,7 @@ const Hero: React.FC = () => {
             {SLIDES.map((s, i) => (
               <img
                 key={s.src}
-                src={s.src}
+                {...photo(s.src, HERO_SIZES)}
                 alt=""
                 aria-hidden={i !== current}
                 className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ${i === current ? 'opacity-100' : 'opacity-0'}`}
@@ -160,7 +164,7 @@ const Hero: React.FC = () => {
               href="#cphi"
               className="group hidden w-[360px] shrink-0 items-center gap-4 rounded-3xl bg-white p-3 pr-5 shadow-2xl transition-transform duration-300 hover:-translate-y-1 xl:flex animate-float"
             >
-              <img src="/images/team-cphi.webp" alt="" className="h-20 w-24 rounded-2xl object-cover" loading="lazy" />
+              <img {...photo('/images/team-cphi.webp', HERO_SIZES)} alt="" className="h-20 w-24 rounded-2xl object-cover" loading="lazy" />
               <div className="min-w-0 flex-1">
                 <div className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
                   <MegaphoneIcon className="h-3.5 w-3.5" /> CPHI India 2026
@@ -193,7 +197,7 @@ const Announcement: React.FC = () => {
             <p className="text-2xl font-medium leading-snug text-white sm:text-3xl lg:text-[2.1rem] text-balance">{t.home.announcement.text}</p>
           </div>
           <div className="relative aspect-[3/2] lg:aspect-auto lg:min-h-[440px]">
-            <img src="/images/team-cphi.webp" alt="Naxcuure team at CPHI India" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            <img {...photo('/images/team-cphi.webp', HERO_SIZES)} alt="Naxcuure team at CPHI India" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
             <div className="absolute inset-y-0 left-0 hidden w-1/6 bg-gradient-to-r from-primary to-transparent lg:block" />
           </div>
         </div>
@@ -218,9 +222,9 @@ const Commitment: React.FC = () => {
       <div className="mt-14 grid gap-5 lg:mt-20 lg:grid-cols-12">
         <AnimatedSection className="lg:col-span-7">
           <div className="group relative aspect-video overflow-hidden rounded-4xl lg:aspect-auto lg:h-full lg:min-h-[520px]">
-            <img src="/images/factory-aerial.webp" alt="Naxcuure manufacturing facility" className="h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" loading="lazy" />
+            <img {...photo('/images/factory-aerial.webp', HERO_SIZES)} alt="Naxcuure manufacturing facility" className="h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent" />
-            <img src="/images/logo-white.png" alt="" className="absolute bottom-7 left-7 hidden h-8 w-auto opacity-90 lg:block" loading="lazy" />
+            <img src="/images/logo-white.webp" alt="" className="absolute bottom-7 left-7 hidden h-8 w-auto opacity-90 lg:block" loading="lazy" />
           </div>
         </AnimatedSection>
         <div className="grid gap-5 lg:col-span-5">
@@ -235,10 +239,10 @@ const Commitment: React.FC = () => {
           <AnimatedSection delay="200ms">
             <div className="grid grid-cols-2 gap-5">
               <div className="h-44 overflow-hidden rounded-4xl sm:h-56">
-                <img src="/images/lab-research.webp" alt="Research laboratory" className="h-full w-full object-cover" loading="lazy" />
+                <img {...photo('/images/lab-research.webp', '(min-width: 1024px) 20vw, 50vw')} alt="Research laboratory" className="h-full w-full object-cover" loading="lazy" />
               </div>
               <div className="h-44 overflow-hidden rounded-4xl sm:h-56">
-                <img src="/images/lab-digital.webp" alt="Pharmaceutical innovation" className="h-full w-full object-cover" loading="lazy" />
+                <img {...photo('/images/lab-digital.webp', '(min-width: 1024px) 20vw, 50vw')} alt="Pharmaceutical innovation" className="h-full w-full object-cover" loading="lazy" />
               </div>
             </div>
           </AnimatedSection>
@@ -340,10 +344,10 @@ const Purpose: React.FC = () => {
         <AnimatedSection className="lg:col-span-6">
           <div className="relative">
             <div className="aspect-video overflow-hidden rounded-4xl lg:aspect-auto lg:h-[520px]">
-              <img src="/images/lab-qc.webp" alt="Quality control laboratory" className="h-full w-full object-cover" loading="lazy" />
+              <img {...photo('/images/lab-qc.webp', HERO_SIZES)} alt="Quality control laboratory" className="h-full w-full object-cover" loading="lazy" />
             </div>
             <div className="absolute -bottom-6 -right-3 hidden h-40 w-56 overflow-hidden rounded-3xl border-[6px] border-canvas shadow-xl sm:block lg:-right-10">
-              <img src="/images/factory-wing.webp" alt="" className="h-full w-full object-cover" loading="lazy" />
+              <img {...photo('/images/factory-wing.webp', '224px')} alt="" className="h-full w-full object-cover" loading="lazy" />
             </div>
           </div>
         </AnimatedSection>

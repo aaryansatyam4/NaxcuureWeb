@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { photo } from '../lib/img';
 
 interface PageHeroProps {
   title: string;
@@ -27,7 +28,7 @@ const PageHero: React.FC<PageHeroProps> = ({ title, subtitle, backgroundImage, c
         <div className="absolute -right-24 -top-24 -z-10 h-72 w-72 rounded-full bg-accent/25 blur-3xl lg:hidden" />
         <div className="relative overflow-hidden rounded-3xl lg:absolute lg:inset-0 lg:-z-10 lg:rounded-none" style={{ aspectRatio: imageRatio }}>
           <img
-            src={backgroundImage}
+            {...photo(backgroundImage)}
             alt=""
             className="h-full w-full object-cover lg:animate-kenburns"
             style={{ objectPosition: imagePosition }}

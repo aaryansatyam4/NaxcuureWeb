@@ -4,6 +4,7 @@ import AnimatedSection from '../components/AnimatedSection';
 import PageHero from '../components/PageHero';
 import SectionHeading from '../components/SectionHeading';
 import { ShieldCheckIcon, AwardIcon, MicroscopeIcon } from '../components/icons';
+import { photo } from '../lib/img';
 
 const Quality: React.FC = () => {
   const { t, u } = useLanguage();
@@ -19,7 +20,7 @@ const Quality: React.FC = () => {
           <AnimatedSection className="order-2 lg:order-1 lg:col-span-6">
             <div className="relative">
               <div className="aspect-video overflow-hidden rounded-4xl lg:aspect-auto lg:h-[560px]">
-                <img src="/images/lab-research.webp" alt="Quality control laboratory" className="h-full w-full object-cover" loading="lazy" />
+                <img {...photo('/images/lab-research.webp', '(min-width: 1024px) 50vw, 100vw')} alt="Quality control laboratory" className="h-full w-full object-cover" loading="lazy" />
               </div>
               <div className="absolute -bottom-6 left-6 flex items-center gap-4 rounded-3xl bg-white p-4 pr-6 shadow-2xl sm:left-10 animate-float">
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-accent text-white"><ShieldCheckIcon className="h-6 w-6" /></span>
@@ -48,7 +49,7 @@ const Quality: React.FC = () => {
             <AnimatedSection className="lg:col-span-5" delay="150ms">
               <div className="relative">
                 <div className="aspect-[4/5] overflow-hidden rounded-4xl">
-                  <img src="/images/lab-digital.webp" alt="Advanced quality systems" className="h-full w-full object-cover" loading="lazy" />
+                  <img {...photo('/images/lab-digital.webp', '(min-width: 1024px) 42vw, 100vw')} alt="Advanced quality systems" className="h-full w-full object-cover" loading="lazy" />
                 </div>
                 <span className="absolute -right-3 -top-3 grid h-24 w-24 place-items-center rounded-full bg-accent text-white shadow-2xl animate-spinslow [animation-duration:30s]">
                   <MicroscopeIcon className="h-9 w-9" />

@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
           {/* Columns */}
           <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-12 lg:py-16">
             <div className="lg:col-span-4">
-              <img src="/images/logo-white.png" alt="Naxcuure Healthcare" className="h-10 w-auto" loading="lazy" />
+              <img src="/images/logo-white.webp" alt="Naxcuure Healthcare" className="h-10 w-auto" loading="lazy" />
               <p className="mt-6 max-w-xs text-sm leading-relaxed text-white/55">{t.footer.footer2}</p>
             </div>
             <div className="lg:col-span-3">
